@@ -7,15 +7,20 @@
 WHITESPACES [ \t\n]+
 DIGIT       [0-9]
 NUMBER      {DIGIT}+
+EXP         {NUMBER}[eE][+-]?{NUMBER}
+REEL        {NUMBER}("."{NUMBER})?{EXP}?
 
 %%
 
 {WHITESPACES}  { }
+"main"		return(tMAIN);
+"const"		return(tCONST);
 "int" 		return(tINT);
 "if" 		return(tIF);
 "while" 	return(tWHILE);
 "return" 	return(tRETURN);
-[a-z]+ 		{yylval.variable = yytext; return(tID);}
+"printf"	return(tPRINT);
+[a-zA-Z][_a-zA-Z0-9]*	{yylval.variable = yytext; return(tID);}
 "{" 		return(tAO);
 "}" 		return(tAF);
 "(" 		return(tPO);
@@ -34,8 +39,11 @@ NUMBER      {DIGIT}+
 "<="		return(tINFEG);
 "<"		return(tINF);
 "!"		return(tNON);
-{NUMBER}	return(tNB);
+{NUMBER}	{yylval.value = atof(yytext); return tNB;}
+{REEL}		{yylval.value = atof(yytext); return tNB;}
+{EXP}		{yylval.value = atof(yytext); return tNB;}
 ","		return(tVIR);
 ";"		return(tPV);
+.		return(tERR);
 
 %%

@@ -4,17 +4,18 @@ int yyerror(char *s);
 %}
 
 %token tMAIN
-%token tID
+%token tID tCONST
 %token tPLUS tMOINS tFOIS tMOD tDIV tEG
 %token tPO tPF 
 %token tAO tAF
 %token tEGALITE tOU tET tSUP tSUPEG tINF tINFEG
 %token tNON
 %token tIF tWHILE
+%token tPRINT
 %token tINT
 %token tNB
 %token tRETURN
-%token tPV tVIR
+%token tPV tVIR tERR
 
 %union{int value; char * variable;}
 
@@ -24,15 +25,17 @@ int yyerror(char *s);
 %start Prg
 %%
 Prg : Dfct Prg
-	| Dfct;
+	|Main;
 
 Dfct : tINT tID tPO PARAMS tPF BODY;
+
+Main : tINT tMAIN tPO tPF BODY;
 
 PARAMS : PARAM tVIR PARAMS
 		| PARAM
 		|;
 
-PARAM : tINT tID;
+PARAM : tINT tID ;
 
 BODY : tAO DECLARATIONS INSTRUCTIONS tAF;
 
@@ -51,6 +54,8 @@ INSTRUCTIONS : 	AFFECTATION tPV INSTRUCTIONS
 			| 	WHILE INSTRUCTIONS
 			|	IF INSTRUCTIONS	
 			| 	RETURN
+			|	tPV
+			| 	PRINT
 			|;
 
 EXPARITHMETIQUE : EXPARITHMETIQUE tPLUS EXPARITHMETIQUE
@@ -77,10 +82,10 @@ IF : tIF tPO EXPCONDITIONNELLE tPF BODY;
 WHILE : tWHILE tPO EXPCONDITIONNELLE tPF BODY;
 
 RETURN : tRETURN EXPARITHMETIQUE tPV
-		| tRETURN tID tPV 
+		| tRETURN tID tPV
 		| tRETURN tPV;
 
-/*PRINT : tPRINT STRING;*/
+PRINT : tPRINT tPO tID tPF tPV;
 
 
 %%
