@@ -20,22 +20,22 @@ NUMBER      {DIGIT}+
 "}" 		return(tAF);
 "(" 		return(tPO);
 ")" 		return(tPF);	
-"+"			return(tPLUS);
-"-"			return(tMOINS);
-"*"			return(tFOIS);
-"/"			return(tDIV);
-"%"			return(tMOD);
-"="			return(tEG);
+"+"		return(tPLUS);
+"-"		return(tMOINS);
+"*"		return(tFOIS);
+"/"		return(tDIV);
+"%"		return(tMOD);
+"="		return(tEG);
 "=="		return(tEGALITE);
 "||"		return(tOU);
 "&&"		return(tET);
-">"			return(tSUP);
+">"		return(tSUP);
 ">="		return(tSUPEG);
 "<="		return(tINFEG);
-"<"			return(tINF);
-"!"			return(tNON);
+"<"		return(tINF);
+"!"		return(tNON);
 {NUMBER}	return(tNB);
-";"			return(tPV);
+","		return(tVIR);
+";"		return(tPV);
 
 %%
-
