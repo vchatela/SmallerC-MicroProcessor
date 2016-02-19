@@ -1,6 +1,8 @@
 %{
 #include<stdio.h>
+#include"table_of_symbol.h"
 int yyerror(char *s);
+
 %}
 
 %token tMAIN
@@ -17,6 +19,9 @@ int yyerror(char *s);
 %token tRETURN
 %token tPV tVIR tERR
 
+%type <variable> tID
+%type <value> EXPARITHMETIQUE
+
 %union{int value; char * variable;}
 
 %left tPLUS tMOINS
@@ -24,12 +29,12 @@ int yyerror(char *s);
 
 %start Prg
 %%
-Prg : Dfct Prg
+Prg :  Dfct Prg
 	|Main;
 
 Dfct : tINT tID tPO PARAMS tPF BODYF;
 
-Main : tINT tMAIN tPO tPF BODY;
+Main : tINT tMAIN tPO tPF BODY {print_table();};
 
 PARAMS : PARAM tVIR PARAMS
 		| PARAM
@@ -39,7 +44,7 @@ PARAM : tINT tID ;
 
 BODYF : tAO INSTRUCTIONS tAF;
 
-BODY : tAO DECLARATIONS INSTRUCTIONS tAF;
+BODY : tAO {up_depth();} DECLARATIONS INSTRUCTIONS tAF {/*delete_depth_at();*/down_depth(); };
 
 DECLARATIONS : tINT SUITEDECLARATIONS tPV DECLARATIONS
 	| tCONST tINT AFFECTATIONS tPV DECLARATIONS			
@@ -48,13 +53,13 @@ DECLARATIONS : tINT SUITEDECLARATIONS tPV DECLARATIONS
 SUITEDECLARATIONS : DECLARATION tVIR SUITEDECLARATIONS
 				| DECLARATION;
 
-DECLARATION : tID
-		| AFFECTATION;
+DECLARATION : tID {add_symb($1,0,0);}
+		| tID tEG EXPARITHMETIQUE {add_symb($1,1,0);};
 
 AFFECTATIONS : AFFECTATION tVIR AFFECTATIONS
 		| AFFECTATION;
 
-AFFECTATION : tID tEG EXPARITHMETIQUE;
+AFFECTATION : tID tEG EXPARITHMETIQUE {/*COP $1 $3*/};
 
 INSTRUCTIONS : 	AFFECTATION tPV INSTRUCTIONS
 			| 	WHILE INSTRUCTIONS
@@ -64,13 +69,15 @@ INSTRUCTIONS : 	AFFECTATION tPV INSTRUCTIONS
 			| 	PRINT
 			|;
 
-EXPARITHMETIQUE : EXPARITHMETIQUE tPLUS EXPARITHMETIQUE
+EXPARITHMETIQUE : EXPARITHMETIQUE tPLUS EXPARITHMETIQUE {/*create temp var (add_symb_temp)
+								ADD temp3 $1 $3
+								--- retourner @temp3*/}
 				| EXPARITHMETIQUE tMOINS EXPARITHMETIQUE
 				| EXPARITHMETIQUE tFOIS EXPARITHMETIQUE
 				| EXPARITHMETIQUE tDIV EXPARITHMETIQUE
 				| EXPARITHMETIQUE tMOD EXPARITHMETIQUE
 				| tPO EXPARITHMETIQUE tPF
-				| tNB
+				| tNB {/*create temp var (add_symb_temp) - AFC <-> AFC @temp1 value     --- retourner @temp1*/}
 				| tID ;
 
 EXPCONDITIONNELLE : EXPARITHMETIQUE tOU EXPARITHMETIQUE
@@ -100,5 +107,6 @@ int yyerror(char *s) {
 }
 
 int main(void) {
+	init_tab();
   yyparse();
 }

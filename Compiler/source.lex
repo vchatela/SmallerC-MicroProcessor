@@ -20,7 +20,7 @@ REEL        {NUMBER}("."{NUMBER})?{EXP}?
 "while" 	return(tWHILE);
 "return" 	return(tRETURN);
 "printf"	return(tPRINT);
-[a-zA-Z][_a-zA-Z0-9]*	{yylval.variable = yytext; return(tID);}
+[a-zA-Z][_a-zA-Z0-9]*	{yylval.variable = strdup(yytext); return(tID);}
 "{" 		return(tAO);
 "}" 		return(tAF);
 "(" 		return(tPO);
