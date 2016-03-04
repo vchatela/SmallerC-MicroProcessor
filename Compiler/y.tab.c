@@ -1660,6 +1660,7 @@ int yyerror(char *s) {
 
 int main(void) {
 	init_tab();
-	f = fopen("exec.s","w");
+	f = fopen("assembler.asm","w");
   yyparse();
+	fclose(f);
 }

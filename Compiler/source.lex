@@ -9,6 +9,7 @@ DIGIT       [0-9]
 NUMBER      {DIGIT}+
 EXP         {NUMBER}[eE][+-]?{NUMBER}
 REEL        {NUMBER}("."{NUMBER})?{EXP}?
+%x comment
 
 %%
 
@@ -45,5 +46,11 @@ REEL        {NUMBER}("."{NUMBER})?{EXP}?
 ","		return(tVIR);
 ";"		return(tPV);
 .		return(tERR);
+
+"/*"         BEGIN(comment);
+     
+<comment>[^*\n]*        /* eat anything that's not a '*' */
+<comment>"*"+[^*/\n]*   /* eat up '*'s not followed by '/'s */
+<comment>"*"+"/"        BEGIN(INITIAL);
 
 %%
