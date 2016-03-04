@@ -1,9 +1,4 @@
-#include<stdio.h>
-#include<string.h>
-#include<stdlib.h> 
 #include"table_of_symbol.h"
-
-#define MAX 256
 
 struct symbol * tab_symb;
 int current_row;
@@ -13,7 +8,7 @@ int depth;
 void init_tab(){
 	tab_symb = malloc(sizeof(struct symbol)*MAX);	
 	current_row = 0;
-current_row_temp = MAX-1;
+	current_row_temp = MAX-1;
 	depth = 0;
 }
 
@@ -28,7 +23,7 @@ void down_depth(){
 
 void add_symb(char * name, int init, int isConst){
 	struct symbol s;
-	s.name = name;
+	s.name = strdup(name);
 	s.init = init;
 	s.depth = depth;
 	s.isConst = isConst;
@@ -37,10 +32,10 @@ void add_symb(char * name, int init, int isConst){
 	current_row++;
 }
 
-int find_symbol(char * name){
+int find_symbol(char * name, int depth){
 	int i;
 	for(i = 0; i < current_row;i++){
-		if(strcmp(name,tab_symb[i].name)){
+		if(strcmp(name,tab_symb[i].name) ==0 && tab_symb[i].depth == depth){
 			return i;
 		}
 	}
@@ -49,17 +44,22 @@ int find_symbol(char * name){
 
 void print_table(){
 	int i;
+	printf("Tab Symbol\n");
 	for(i = 0; i < current_row;i++){
 		printf("Nom : %s Init : %d Profondeur : %d Const : %d \n", tab_symb[i].name, tab_symb[i].init, tab_symb[i].depth, tab_symb[i].isConst);
 	}
+	printf("Tab Temporary Symbol\n");
+	for(i = MAX-1; i > current_row_temp;i--){
+		printf("Nom : %s Init : %d Profondeur : %d Const : %d \n", tab_symb[i].name, tab_symb[i].init, tab_symb[i].depth, tab_symb[i].isConst);
+	}
+	
 }
 
-void delete_depth_at(){
-//TODO things about organization
-	int i;
-	for(i = 0; i < current_row;i++){
-		if(tab_symb[i].depth==depth){
-			//supp la var
-		}
+void delete_depth_at(int dep){
+	// BE CAREFULL -> delete only last element in pratice
+	int * i = &current_row;
+	while(tab_symb[*i].depth==dep){
+		free(&tab_symb[*i]);
+		current_row--;
 	}
 }

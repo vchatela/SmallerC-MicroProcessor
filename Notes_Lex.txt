@@ -7,7 +7,7 @@ yyless(k)	Retire les k premiers caractères de yytext
 yymore()	Concaténation du texte reconnu à la prochaine valeur de yytext
 
 Table des symboles
-(@ du symbole	|) Nom 	| init	 	| profondeur	| const			|
+(@ du symbole	|) Nom 	| init	|  profondeur	| const			|
 		0		|	a	|	1		|		1		|	1	//TRUE	|
 		1		|	i	|	0		|		1		|	0		 	| 
 		2		|	j	|	0		|		2		|	0	//FALSE	|
@@ -40,7 +40,7 @@ int main(){
 	int a = 5; 
 	/* 
 	add_symb(a) (à l'@ 0)
-	add_symb(temp0)
+	add_symb_temp(temp0)
 	
 	AFC @temp0 5 <-> AFC 0 5
 	COP @a @temp0
@@ -68,3 +68,7 @@ int main(){
 	ADD @temp3 @temp1 @temp2
 	COP @c @temp3
 }
+
+
+TODO :
+yyerror if const and affectation etc.

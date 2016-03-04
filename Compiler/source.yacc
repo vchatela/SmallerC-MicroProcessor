@@ -1,8 +1,12 @@
 %{
 #include<stdio.h>
 #include"table_of_symbol.h"
-int yyerror(char *s);
 
+int yyerror(char *s);
+extern int current_row;
+extern int current_row_temp;
+extern int depth;
+FILE * f;
 %}
 
 %token tMAIN
@@ -20,6 +24,7 @@ int yyerror(char *s);
 %token tPV tVIR tERR
 
 %type <variable> tID
+%type <value> tNB
 %type <value> EXPARITHMETIQUE
 
 %union{int value; char * variable;}
@@ -47,21 +52,26 @@ BODYF : tAO INSTRUCTIONS tAF;
 BODY : tAO {up_depth();} DECLARATIONS INSTRUCTIONS tAF {/*delete_depth_at();*/down_depth(); };
 
 DECLARATIONS : tINT SUITEDECLARATIONS tPV DECLARATIONS
-	| tCONST tINT AFFECTATIONS tPV DECLARATIONS			
+	| tCONST tINT AFFECTATIONSCONSTS tPV DECLARATIONS {}			
 	| ;
 
 SUITEDECLARATIONS : DECLARATION tVIR SUITEDECLARATIONS
 				| DECLARATION;
 
 DECLARATION : tID {add_symb($1,0,0);}
-		| tID tEG EXPARITHMETIQUE {add_symb($1,1,0);};
+		| tID tEG EXPARITHMETIQUE {add_symb($1,1,0); fprintf(f,"COP %d %d\n",find_symbol($1,depth),$3); current_row_temp = MAX-1;};
+
+AFFECTATIONSCONSTS : AFFECTATIONSCONST tVIR AFFECTATIONSCONSTS
+		| AFFECTATIONSCONST;
+
+AFFECTATIONSCONST : tID tEG EXPARITHMETIQUE { add_symb($1,1,1); fprintf(f,"COP %d %d\n",find_symbol($1,depth),$3); current_row_temp = MAX-1;};
 
 AFFECTATIONS : AFFECTATION tVIR AFFECTATIONS
 		| AFFECTATION;
 
-AFFECTATION : tID tEG EXPARITHMETIQUE {/*COP $1 $3*/};
+AFFECTATION : tID tEG EXPARITHMETIQUE { fprintf(f,"COP %d %d\n",find_symbol($1,depth),$3); current_row_temp = MAX-1;};
 
-INSTRUCTIONS : 	AFFECTATION tPV INSTRUCTIONS
+INSTRUCTIONS : 	AFFECTATIONS tPV INSTRUCTIONS
 			| 	WHILE INSTRUCTIONS
 			|	IF INSTRUCTIONS	
 			| 	RETURN
@@ -69,16 +79,14 @@ INSTRUCTIONS : 	AFFECTATION tPV INSTRUCTIONS
 			| 	PRINT
 			|;
 
-EXPARITHMETIQUE : EXPARITHMETIQUE tPLUS EXPARITHMETIQUE {/*create temp var (add_symb_temp)
-								ADD temp3 $1 $3
-								--- retourner @temp3*/}
+EXPARITHMETIQUE : EXPARITHMETIQUE tPLUS EXPARITHMETIQUE {fprintf(f,"ADD %d %d %d\n",$1,$1,$3); $$ = $1;current_row_temp++;}
 				| EXPARITHMETIQUE tMOINS EXPARITHMETIQUE
 				| EXPARITHMETIQUE tFOIS EXPARITHMETIQUE
 				| EXPARITHMETIQUE tDIV EXPARITHMETIQUE
 				| EXPARITHMETIQUE tMOD EXPARITHMETIQUE
-				| tPO EXPARITHMETIQUE tPF
-				| tNB {/*create temp var (add_symb_temp) - AFC <-> AFC @temp1 value     --- retourner @temp1*/}
-				| tID ;
+				| tPO EXPARITHMETIQUE tPF {$$ = $2;}
+				| tNB { fprintf(f,"AFC %d %d\n",current_row_temp,$1); $$ = current_row_temp; current_row_temp--;}
+				| tID {fprintf(f,"COP %d %d\n",current_row_temp,find_symbol($1,depth)); $$ = current_row_temp; current_row_temp--;};
 
 EXPCONDITIONNELLE : EXPARITHMETIQUE tOU EXPARITHMETIQUE
 				| 	EXPARITHMETIQUE tET EXPARITHMETIQUE
@@ -108,5 +116,7 @@ int yyerror(char *s) {
 
 int main(void) {
 	init_tab();
+	f = fopen("assembler.asm","w");
   yyparse();
+	fclose(f);
 }

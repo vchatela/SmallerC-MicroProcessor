@@ -1,6 +1,11 @@
-
 #ifndef TABLE_SYMBOL_H
 #define TABLE_SYMBOL_H
+
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h> 
+
+#define MAX 256
 
 struct symbol{
 	char * name;
@@ -11,12 +16,17 @@ struct symbol{
 };
 
 void init_tab();
+
 void add_symb(char * name, int init, int isConst);
-void remove_symb();
+
 void print_table();
-int change_value(char * who, int val);
+
+int find_symbol(char * name, int depth);
+
 void up_depth();
 void down_depth();
+
+void delete_depth_at(int dep);
 
 
 #endif
