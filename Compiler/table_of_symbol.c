@@ -6,7 +6,11 @@ int current_row_temp;
 int depth;
 
 void init_tab(){
-	tab_symb = malloc(sizeof(struct symbol)*MAX);	
+	tab_symb = malloc(sizeof(struct symbol)*MAX);
+	if(tab_symb == NULL){
+		perror("Error in malloc");
+		exit(-1);
+	}	
 	current_row = 0;
 	current_row_temp = MAX-1;
 	depth = 0;

@@ -1,6 +1,6 @@
 %{
 //declaration : include etc,
-#include "source.h"
+#include "compiler.h"
 #include <stdlib.h>
 %}
 
@@ -29,9 +29,8 @@ REEL        {NUMBER}("."{NUMBER})?{EXP}?
 ")" 		return(tPF);	
 "+"		return(tPLUS);
 "-"		return(tMOINS);
-"*"		return(tFOIS);
+"*"		return(tETOILE);
 "/"		return(tDIV);
-"%"		return(tMOD);
 "="		return(tEG);
 "=="		return(tEGALITE);
 "||"		return(tOU);

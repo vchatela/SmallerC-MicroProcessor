@@ -1,17 +1,22 @@
-%union{
-	int nb;
-};
+%{
+#include<stdio.h>
+
 int i = 0; //compteur global
 int instructions[512][4]; //512 instructions + 4 operandes      -> faire une structure avec pointeur de fonctions (remplacer tADD par la fonction d'addition) + tableau d'operandes (3). Dans le while on executera uniquement la fonction associee;
 
 int mem[512];
+%}
 
 %token tNB tADD tMUL tSOU tDIV tCOP tAFC tJMP tJMF tINF tSUP tEQU tPRI
+%type <nb> Instruction
+%type <nb> tNB
+%union{ int nb; }
 
+%start Instructions
 %% 
 Instructions : Instruction Instructions 
 			|	Instruction;
-Instruction : tADD tNB tNB tNB {instructions[i][0] = tADD; 
+Instruction : 		tADD tNB tNB tNB {instructions[i][0] = tADD; 
 								instructions[i][1] = $2;
 								instructions[i][2] = $3;
 								instructions[i][3] = $4;
@@ -63,10 +68,10 @@ Instruction : tADD tNB tNB tNB {instructions[i][0] = tADD;
 								i++;}
 			| tPRI tNB {instructions[i][0] = tPRI; 
 								instructions[i][1] = $2;
-								i++;}}
+								i++;}
 			;
-			
-void main(){
+%%			
+int main(void){
 	yyparse();
 	int ip = 0;
 	while (ip<i){

@@ -1,6 +1,6 @@
 %{
 	include"y.tab.h"
-}%
+%}
 
 %%
 ^1 	{return tADD ;}
