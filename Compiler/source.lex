@@ -18,6 +18,7 @@ REEL        {NUMBER}("."{NUMBER})?{EXP}?
 "const"		return(tCONST);
 "int" 		return(tINT);
 "if" 		return(tIF);
+"else"		return(tELSE);
 "while" 	return(tWHILE);
 "return" 	return(tRETURN);
 "printf"	return(tPRINT);
