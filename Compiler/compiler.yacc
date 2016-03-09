@@ -1,24 +1,18 @@
 %{
 #include<stdio.h>
 #include"table_of_symbol.h"
+#include"asm.h"
 
-
-struct s_instruction{
-	char codeOp[4];
-	int args[4];
-	int nb_args;
-};
 
 int yyerror(char *s);
-void addInstruction(char * code, int nb, int * args);
 
 extern int current_row;
 extern int current_row_temp;
 extern int depth;
+extern int counter;
 
 FILE * f;
-struct s_instruction prog[512];
-int counter;
+extern struct s_instruction prog[512];
 
 %}
 
@@ -52,7 +46,7 @@ Prg :  Dfct Prg
 
 Dfct : tINT tID tPO PARAMS tPF BODYF;
 
-Main : tINT tMAIN tPO tPF BODY {print_table();};
+Main : tINT tMAIN tPO tPF BODY {print_table_symb();};
 
 PARAMS : PARAM tVIR PARAMS
 		| PARAM
@@ -71,18 +65,22 @@ DECLARATIONS : tINT SUITEDECLARATIONS tPV DECLARATIONS
 SUITEDECLARATIONS : DECLARATION tVIR SUITEDECLARATIONS
 				| DECLARATION;
 
-DECLARATION : tID {add_symb($1,0,0);}
-		| tID tEG EXPARITHMETIQUE {add_symb($1,1,0); int * args = malloc(2*sizeof(int)); args[0] = find_symbol($1,depth); args[1] = $3; addInstruction("COP",2,args); current_row_temp = MAX-1;};
+DECLARATION : tID 
+	{add_symb($1,0,0);}
+		| tID tEG EXPARITHMETIQUE 
+	{add_symb($1,1,0); int * args = malloc(2*sizeof(int)); args[0] = find_symbol($1,depth); args[1] = $3; addInstruction("COP",2,args); current_row_temp = MAX-1;};
 
 AFFECTATIONSCONSTS : AFFECTATIONSCONST tVIR AFFECTATIONSCONSTS
 		| AFFECTATIONSCONST;
 
-AFFECTATIONSCONST : tID tEG EXPARITHMETIQUE { add_symb($1,1,1); int * args = malloc(2*sizeof(int)); args[0] = find_symbol($1,depth); args[1] = $3; addInstruction("COP",2,args); current_row_temp = MAX-1;};
+AFFECTATIONSCONST : tID tEG EXPARITHMETIQUE 
+	{ add_symb($1,1,1); int * args = malloc(2*sizeof(int)); args[0] = find_symbol($1,depth); args[1] = $3; addInstruction("COP",2,args); current_row_temp = MAX-1;};
 
 AFFECTATIONS : AFFECTATION tVIR AFFECTATIONS
 		| AFFECTATION;
 
-AFFECTATION : tID tEG EXPARITHMETIQUE { int * args = malloc(2*sizeof(int)); args[0] = find_symbol($1,depth); args[1] = $3; addInstruction("COP",2,args); current_row_temp = MAX-1;};
+AFFECTATION : tID tEG EXPARITHMETIQUE 
+	{ int * args = malloc(2*sizeof(int)); args[0] = find_symbol($1,depth); args[1] = $3; addInstruction("COP",2,args); current_row_temp = MAX-1;};
 
 INSTRUCTIONS : 	AFFECTATIONS tPV INSTRUCTIONS
 			| 	WHILE INSTRUCTIONS
@@ -92,13 +90,20 @@ INSTRUCTIONS : 	AFFECTATIONS tPV INSTRUCTIONS
 			| 	PRINT
 			|;
 
-EXPARITHMETIQUE : EXPARITHMETIQUE tPLUS EXPARITHMETIQUE {int * args = malloc(3*sizeof(int)); args[0] = $1; args[1] = $1;args[2] = $3; addInstruction("ADD",3,args); $$ = $1;current_row_temp++;}
-				| EXPARITHMETIQUE tMOINS EXPARITHMETIQUE {int * args = malloc(3*sizeof(int)); args[0] = $1; args[1] = $1;args[2] = $3; addInstruction("SOU",3,args); $$ = $1;current_row_temp++;}
-				| EXPARITHMETIQUE tETOILE EXPARITHMETIQUE {int * args = malloc(3*sizeof(int)); args[0] = $1; args[1] = $1;args[2] = $3; addInstruction("MUL",3,args); $$ = $1;current_row_temp++;}
-				| EXPARITHMETIQUE tDIV EXPARITHMETIQUE {int * args = malloc(3*sizeof(int)); args[0] = $1; args[1] = $1;args[2] = $3; addInstruction("DIV",3,args); $$ = $1;current_row_temp++;}
-				| tPO EXPARITHMETIQUE tPF {$$ = $2;}
-				| tNB { int * args = malloc(2*sizeof(int)); args[0] = current_row_temp; args[1] = $1; addInstruction("AFC",2,args); $$ = current_row_temp; current_row_temp--;}
-				| tID { int * args = malloc(2*sizeof(int)); args[0] = current_row_temp; args[1] = find_symbol($1,depth); addInstruction("COP",2,args); $$ = current_row_temp; current_row_temp--;};
+EXPARITHMETIQUE : EXPARITHMETIQUE tPLUS EXPARITHMETIQUE 
+	{int * args = malloc(3*sizeof(int)); args[0] = $1; args[1] = $1;args[2] = $3; addInstruction("ADD",3,args); $$ = $1;current_row_temp++;}
+				| EXPARITHMETIQUE tMOINS EXPARITHMETIQUE 
+	{int * args = malloc(3*sizeof(int)); args[0] = $1; args[1] = $1;args[2] = $3; addInstruction("SOU",3,args); $$ = $1;current_row_temp++;}
+				| EXPARITHMETIQUE tETOILE EXPARITHMETIQUE 
+	{int * args = malloc(3*sizeof(int)); args[0] = $1; args[1] = $1;args[2] = $3; addInstruction("MUL",3,args); $$ = $1;current_row_temp++;}
+				| EXPARITHMETIQUE tDIV EXPARITHMETIQUE 
+	{int * args = malloc(3*sizeof(int)); args[0] = $1; args[1] = $1;args[2] = $3; addInstruction("DIV",3,args); $$ = $1;current_row_temp++;}
+				| tPO EXPARITHMETIQUE tPF 
+	{$$ = $2;}
+				| tNB 
+	{ int * args = malloc(2*sizeof(int)); args[0] = current_row_temp; args[1] = $1; addInstruction("AFC",2,args); $$ = current_row_temp; current_row_temp--;}
+				| tID 
+	{ int * args = malloc(2*sizeof(int)); args[0] = current_row_temp; args[1] = find_symbol($1,depth); addInstruction("COP",2,args); $$ = current_row_temp; current_row_temp--;};
 
 EXPCONDITIONNELLE : EXPARITHMETIQUE tOU EXPARITHMETIQUE
 				| 	EXPARITHMETIQUE tET EXPARITHMETIQUE
@@ -129,28 +134,9 @@ int yyerror(char *s) {
  fprintf(stderr,"%s\n",s);
 }
 
-void writeProgramToFile(FILE * f){
-	int i,j;
-	for(i=0; i< counter; i++){
-		fprintf(f,"%s ",prog[i].codeOp);
-		for(j=0;j< prog[i].nb_args; j++){
-			fprintf(f, "%d ",prog[i].args[j]);
-		}
-		fprintf(f,"\n");
-	}
-}
-
-void addInstruction(char * code, int nb, int * args){
-	strcpy(prog[counter].codeOp,code); prog[counter].nb_args = nb;
-	int i;
-	for(i=0;i<nb;i++){
-		prog[counter].args[i]=args[i];
-	}
-	counter ++;
-}
 int main(void) {
 	counter = 0;	
-	init_tab();
+	init_tab_symb();
 	f = fopen("assembler.asm","w");
 	yyparse();	
 	//write prog to file	

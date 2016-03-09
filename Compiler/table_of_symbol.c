@@ -5,7 +5,7 @@ int current_row;
 int current_row_temp;
 int depth;
 
-void init_tab(){
+void init_tab_symb(){
 	tab_symb = malloc(sizeof(struct symbol)*MAX);
 	if(tab_symb == NULL){
 		perror("Error in malloc");
@@ -46,7 +46,7 @@ int find_symbol(char * name, int depth){
 	return -1;
 }
 
-void print_table(){
+void print_table_symb(){
 	int i;
 	printf("Tab Symbol\n");
 	for(i = 0; i < current_row;i++){
