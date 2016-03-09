@@ -15,8 +15,6 @@ struct symbol{
 	// enum type t;
 };
 
-void init_tab();
-
 void add_symb(char * name, int init, int isConst);
 
 void print_table();

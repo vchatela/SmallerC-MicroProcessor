@@ -1,10 +1,8 @@
 int main(){
-	const int a = 2;
-	int c;
-	/* if (a==2){
-	}
-	*/
-	a = a +3;
+	int a = 2;
+	int c = 4;
 	c = a +c;
+	a = a +3;
+	
 	return 0;
 }

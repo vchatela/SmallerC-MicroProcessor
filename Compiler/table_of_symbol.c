@@ -1,20 +1,9 @@
 #include"table_of_symbol.h"
 
-struct symbol * tab_symb;
-int current_row;
-int current_row_temp;
-int depth;
-
-void init_tab_symb(){
-	tab_symb = malloc(sizeof(struct symbol)*MAX);
-	if(tab_symb == NULL){
-		perror("Error in malloc");
-		exit(-1);
-	}	
-	current_row = 0;
-	current_row_temp = MAX-1;
-	depth = 0;
-}
+struct symbol tab_symb[MAX];
+int current_row= 0;
+int current_row_temp= MAX-1;
+int depth= 0;
 
 void up_depth(){
 	depth++;

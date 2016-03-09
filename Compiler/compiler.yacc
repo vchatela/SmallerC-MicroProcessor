@@ -32,7 +32,10 @@ extern struct s_instruction prog[512];
 
 %type <variable> tID
 %type <value> tNB
+%type <value> tWHILE
+%type <value> tIF
 %type <value> EXPARITHMETIQUE
+%type <value> EXPCONDITIONNELLE
 
 %union{int value; char * variable;}
 
@@ -105,22 +108,22 @@ EXPARITHMETIQUE : EXPARITHMETIQUE tPLUS EXPARITHMETIQUE
 				| tID 
 	{ int * args = malloc(2*sizeof(int)); args[0] = current_row_temp; args[1] = find_symbol($1,depth); addInstruction("COP",2,args); $$ = current_row_temp; current_row_temp--;};
 
-EXPCONDITIONNELLE : EXPARITHMETIQUE tOU EXPARITHMETIQUE
+EXPCONDITIONNELLE : EXPARITHMETIQUE tOU EXPARITHMETIQUE {/*return var=0 for false - var=1 for true*/}
 				| 	EXPARITHMETIQUE tET EXPARITHMETIQUE
 				| 	EXPARITHMETIQUE tINFEG EXPARITHMETIQUE
 				| 	EXPARITHMETIQUE tINF EXPARITHMETIQUE
 				| 	EXPARITHMETIQUE tSUPEG EXPARITHMETIQUE
 				| 	EXPARITHMETIQUE tSUP EXPARITHMETIQUE
 				| 	EXPARITHMETIQUE tEGALITE EXPARITHMETIQUE
-				| 	tPO EXPARITHMETIQUE tPF
-				| 	tNON EXPARITHMETIQUE;
+				| 	tPO EXPARITHMETIQUE tPF {/*$$ = $2;*/}
+				| 	tNON EXPARITHMETIQUE {/*TODO !$$ = $2;*/};
 
-IF : tIF tPO EXPCONDITIONNELLE tPF BODY SUITEIF;
+IF : tIF tPO EXPCONDITIONNELLE tPF { int * args = malloc(2*sizeof(int)); /*condition*/args[0] = $3; addInstruction("JMF",2,args); $1 = counter;} BODY {updateJMF($1,counter);} SUITEIF;
 
 SUITEIF : tELSE BODY
 		| ;
 
-WHILE : tWHILE tPO EXPCONDITIONNELLE tPF BODY;
+WHILE : tWHILE tPO EXPCONDITIONNELLE tPF { int * args = malloc(2*sizeof(int)); /*condition*/args[0] = $3; addInstruction("JMF",2,args); $1 = counter;} BODY {updateJMF($1,counter);};
 
 RETURN : tRETURN EXPARITHMETIQUE tPV
 		| tRETURN tID tPV
@@ -136,10 +139,8 @@ int yyerror(char *s) {
 
 int main(void) {
 	counter = 0;	
-	init_tab_symb();
 	f = fopen("assembler.asm","w");
 	yyparse();	
-	//write prog to file	
 	writeProgramToFile(f);
 	fclose(f);
 }
