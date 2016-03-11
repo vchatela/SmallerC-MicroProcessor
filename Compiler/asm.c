@@ -18,9 +18,13 @@ void addInstruction(char * code, int nb, int * args){
 		prog[counter].args[i]=args[i];
 	}
 	counter ++;
-	free(args);
+	//free(args);
 }
 
 void updateJMF(int pos, int to){
 	prog[pos].args[1]=to;
 } 
+
+void updateWHILE(int pos, int val){
+	prog[pos].args[0] = val;
+}

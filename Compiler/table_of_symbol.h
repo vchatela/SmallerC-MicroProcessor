@@ -12,10 +12,10 @@ struct symbol{
 	int init;
 	int depth;
 	int isConst;
-	// enum type t;
+	int isPointer;
 };
 
-void add_symb(char * name, int init, int isConst);
+void add_symb(char * name, int init, int isConst, int isPointer);
 
 void print_table();
 

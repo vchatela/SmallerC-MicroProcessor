@@ -45,6 +45,7 @@ REEL        {NUMBER}("."{NUMBER})?{EXP}?
 {EXP}		{yylval.value = atof(yytext); return tNB;}
 ","		return(tVIR);
 ";"		return(tPV);
+"&"		return(tADDR);
 .		return(tERR);
 
 "/*"         BEGIN(comment);

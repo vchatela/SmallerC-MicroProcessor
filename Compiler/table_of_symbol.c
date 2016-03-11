@@ -14,22 +14,25 @@ void down_depth(){
 	depth--;
 }
 
-void add_symb(char * name, int init, int isConst){
+void add_symb(char * name, int init, int isConst, int isPointer){
 	struct symbol s;
 	s.name = strdup(name);
 	s.init = init;
 	s.depth = depth;
 	s.isConst = isConst;
+	s.isPointer = isPointer;
 
 	tab_symb[current_row] = s;
 	current_row++;
 }
 
 int find_symbol(char * name, int depth){
-	int i;
+	int i, d;
 	for(i = 0; i < current_row;i++){
-		if(strcmp(name,tab_symb[i].name) ==0 && tab_symb[i].depth == depth){
-			return i;
+		for(d = depth;d>=0;d--){
+			if(strcmp(name,tab_symb[i].name) ==0 && tab_symb[i].depth == d){
+				return i;
+			}
 		}
 	}
 	return -1;

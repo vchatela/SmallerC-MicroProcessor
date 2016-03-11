@@ -6,7 +6,7 @@
 #include<stdlib.h> 
 
 struct s_instruction{
-	char codeOp[4];
+	char codeOp[6]; //PCOPA\0
 	int args[4];
 	int nb_args;
 };
@@ -16,5 +16,7 @@ int counter;
 
 void addInstruction(char * code, int nb, int * args);
 void writeProgramToFile(FILE * f);
+void updateJMF(int pos, int to);
+void updateWHILE(int pos, int val);
 
 #endif
