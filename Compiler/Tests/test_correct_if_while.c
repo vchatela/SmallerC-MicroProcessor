@@ -5,7 +5,7 @@ int main(){
 		return;
 	}
 	while(1==1){
-		a = a +c;
+		/*a = a +c;*/
 	}
 	return 0;
 }

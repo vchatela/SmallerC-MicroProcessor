@@ -9,11 +9,11 @@ prog = compiler
 yacc: y.tab.c lex.yy.c table_of_symbol.c   
 	$(CC) y.tab.c lex.yy.c table_of_symbol.c asm.c -ll -o $(prog)
 
-y.tab.c:
+y.tab.c: compiler.yacc
 	$(YACC) $(YFLAGS) compiler.yacc
 	mv y.tab.h compiler.h
 	
-lex.yy.c:
+lex.yy.c: compiler.lex
 	$(LEX) compiler.lex
 
 clean:

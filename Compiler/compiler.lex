@@ -25,6 +25,8 @@ REEL        {NUMBER}("."{NUMBER})?{EXP}?
 [a-zA-Z][_a-zA-Z0-9]*	{yylval.variable = strdup(yytext); return(tID);}
 "{" 		return(tAO);
 "}" 		return(tAF);
+"["		return(tCO);
+"]"		return(tCF);
 "(" 		return(tPO);
 ")" 		return(tPF);	
 "+"		return(tPLUS);

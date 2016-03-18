@@ -12,10 +12,12 @@ struct symbol{
 	int init;
 	int depth;
 	int isConst;
-	int isPointer;
+	int size;
 };
 
-void add_symb(char * name, int init, int isConst, int isPointer);
+struct symbol * getSymb(int row);
+
+void add_symb(char * name, int init, int isConst, int size);
 
 void print_table();
 

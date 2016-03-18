@@ -4,7 +4,7 @@
 int i = 0; //compteur global
 int instructions[512][4]; //512 instructions + 4 operandes      -> faire une structure avec pointeur de fonctions (remplacer tADD par la fonction d'addition) + tableau d'operandes (3). Dans le while on executera uniquement la fonction associee;
 
-int mem[512];
+int m[512];
 %}
 
 %token tNB tADD tMUL tSOU tDIV tCOP tAFC tJMP tJMF tINF tSUP tEQU tPRI
@@ -76,7 +76,7 @@ int main(void){
 	int ip = 0;
 	while (ip<i){
 		if(instructions[n][0]==tADD){
-		n[ins[ip][0]+bp]
+		//n[ins[ip][0]+bp]
 			m[instructions[ip][1]+bp] = m[instructions[ip][2]+bp] + m[instructions[ip][3]+bp];
 			n++;
 		} else if(instructions[n][0]==COP){
