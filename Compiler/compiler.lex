@@ -10,7 +10,7 @@ NUMBER      {DIGIT}+
 EXP         {NUMBER}[eE][+-]?{NUMBER}
 REEL        {NUMBER}("."{NUMBER})?{EXP}?
 %x comment
-
+        
 %%
 
 {WHITESPACES}  { }

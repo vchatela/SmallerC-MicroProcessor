@@ -33,15 +33,19 @@ void add_symb(char * name, int init, int isConst, int size){
 	current_row_temp++;
 }
 int find_symbol(char * name, int depth){
-	int i, d;
+	int i, pos = -1;
+	int max_d = -1;
 	for(i = 0; i < current_row;i++){
-		for(d = depth;d>=0;d--){
-			if(strcmp(name,tab_symb[i].name) ==0 && tab_symb[i].depth == d){
-				return i;
+		if(strcmp(name,tab_symb[i].name) ==0 && tab_symb[i].depth<= depth){
+			if(max_d< tab_symb[i].depth){			
+				max_d = tab_symb[i].depth;
+				pos = i;
 			}
 		}
 	}
-	return -1;
+	/*après premier tour de boucle on aura la valeur max de depth pour l'actuel name du coup pas besoin de deux boucles !! */
+	
+	return pos;
 }
 
 void print_table_symb(){

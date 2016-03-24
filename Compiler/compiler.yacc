@@ -5,7 +5,7 @@
 
 
 int yyerror(char *s);
-
+int error= 0;
 extern int current_row;
 extern int current_row_temp;
 extern int depth;
@@ -51,7 +51,7 @@ Prg :  Dfct Prg
 Dfct : tINT tID tPO PARAMS tPF BODYF
 	| tINT tETOILE tID tPO PARAMS tPF BODYF {/*Comment gérer le passage par adresse dans l'usage dans la fonction*/};
 
-Main : tINT tMAIN tPO tPF BODY {print_table_symb();};
+Main : tINT tMAIN tPO tPF BODY {};
 
 PARAMS : PARAM tVIR PARAMS
 		| PARAM
@@ -75,7 +75,7 @@ SUITEDECLARATIONS : DECLARATION tVIR SUITEDECLARATIONS
 DECLARATION : tID 
 	{add_symb($1,0,0,1);}
 		| tID tEG EXPARITHMETIQUE 
-	{add_symb($1,1,0,1); int args[2]; args[0] = find_symbol($1,depth); args[1] = $3; addInstruction("COP",2,args); current_row_temp--;}
+	{ add_symb($1,1,0,1); int args[2]; args[0] = find_symbol($1,depth); args[1] = $3; addInstruction("COP",2,args); current_row_temp--;}
 		| tETOILE tID
 	{add_symb($2,0,0,1);}
 		| tETOILE tID tEG EXPARITHMETIQUE
@@ -95,10 +95,16 @@ AFFECTATIONSCONST : tID tEG EXPARITHMETIQUE
 AFFECTATIONS : AFFECTATION tVIR { current_row_temp--;} AFFECTATIONS
 		| AFFECTATION{ current_row_temp--;} ;
 
-AFFECTATION : tID tEG EXPARITHMETIQUE /*verifier si const !!!!*/
-	{ int args[2]; args[0] = find_symbol($1,depth); args[1] = $3; addInstruction("COP",2,args); $$ = $3;}
+AFFECTATION : tID tEG EXPARITHMETIQUE
+	{ int pos = find_symbol($1,depth); 
+if(pos==-1){yyerror("Id n'existe pas.");}
+else{ if(getSymb(pos)->isConst){yyerror("Attention affectation sur un const.");/*il serait bien d'afficher la ligne*/}
+	else{ int args[2]; args[0] = pos; args[1] = $3; addInstruction("COP",2,args); $$ = $3;}}}
 		| tETOILE tID tEG EXPARITHMETIQUE 
-	{ int args[2]; args[0] = find_symbol($2,depth); args[1] = $4; addInstruction("PCOPB",2,args); $$ = $4;}
+	{ int pos = find_symbol($2,depth); 
+if(pos==-1){yyerror("Id n'existe pas.");}
+else{ if(getSymb(pos)->isConst){yyerror("Attention affectation sur un const.");/*il serait bien d'afficher la ligne*/}
+	else{ int args[2]; args[0] = pos; args[1] = $4; addInstruction("PCOPB",2,args); $$ = $4;}}}
 		| tID tCO EXPARITHMETIQUE tCF tEG EXPARITHMETIQUE
 	{int args[3]; args[0] = current_row_temp; args[1] = find_symbol($1,depth) ;args[2] = $3; addInstruction("ADD",3,args);
 	args[0] = current_row_temp; args[1] = $3; addInstruction("PCOPB",2,args);current_row_temp--;/*verifier si besoin de supprimer la dernière*/}
@@ -172,12 +178,18 @@ PRINT : tPRINT tPO tID tPF tPV {int args[1]; args[0] = find_symbol($3,depth); ad
 %%
 int yyerror(char *s) {
  fprintf(stderr,"%s\n",s);
+ error = 1;
 }
 
 int main(void) {
 	counter = 0;	
-	f = fopen("assembler.asm","w");
-	yyparse();	
-	writeProgramToFile(f);
-	fclose(f);
+	yyparse();
+	if(!error){
+	  print_table_symb();
+	  f = fopen("assembler.asm","w");
+	  writeProgramToFile(f);
+	  fclose(f);
+	}else{
+	  printf("Process executed returning error\n");
+	}
 }
