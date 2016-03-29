@@ -21,7 +21,7 @@ REEL        {NUMBER}("."{NUMBER})?{EXP}?
 "else"		return(tELSE);
 "while" 	return(tWHILE);
 "return" 	return(tRETURN);
-"printf"	return(tPRINT);
+"print"		return(tPRINT);
 [a-zA-Z][_a-zA-Z0-9]*	{yylval.variable = strdup(yytext); return(tID);}
 "{" 		return(tAO);
 "}" 		return(tAF);
@@ -33,8 +33,8 @@ REEL        {NUMBER}("."{NUMBER})?{EXP}?
 "-"		return(tMOINS);
 "*"		return(tETOILE);
 "/"		return(tDIV);
-"="		return(tEG);
 "=="		return(tEGALITE);
+"="		return(tEG);
 "||"		return(tOU);
 "&&"		return(tET);
 ">"		return(tSUP);

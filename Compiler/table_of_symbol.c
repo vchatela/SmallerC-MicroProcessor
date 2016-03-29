@@ -50,28 +50,31 @@ int find_symbol(char * name, int depth){
 
 void print_table_symb(){
 	int i;
-	printf("Tab Symbol\n");
+	printf("/********** Tab Symbol ************/ \n");
 	for(i = 0; i < current_row;i++){
 		printf("Nom : %s Init : %d Profondeur : %d Const : %d ", tab_symb[i].name, tab_symb[i].init, tab_symb[i].depth, tab_symb[i].isConst);
 		if(tab_symb[i].size != 1){
 			printf(" Size : %d",tab_symb[i].size);
 		}
-		else {
-			printf(" \n");
-		}
+		printf(" \n");
 	}
-	printf("Tab Temporary Symbol\n");
+	if(i==0){
+	    printf("Vide.\n");
+	}
+	printf("/********** Tab Temporary Symbol ************/ \n");
 	for(i = current_row; i < current_row_temp;i++){
 		printf("Nom : %d\n", i);
 	}
-	
+	if(i==current_row){
+	    printf("Vide.");
+	}
+	printf("\n\n");
 }
 
-void delete_depth_at(int dep){
+void delete_depth_at(){
 	// BE CAREFULL -> delete only last element in pratice
-	int * i = &current_row;
-	while(tab_symb[*i].depth==dep){
-		free(&tab_symb[*i]);
+	current_row_temp = current_row;
+	while(tab_symb[current_row_temp-1].depth==depth){
 		current_row--;
 		current_row_temp--;
 	}

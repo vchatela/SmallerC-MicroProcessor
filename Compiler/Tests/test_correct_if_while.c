@@ -1,11 +1,19 @@
 int main(){
-	int a = 2;
-	int c;
-	if(a == 3){
-		return;
+	int b=3,*c,*d=&c;
+	int a = 14, e = 1;
+	*c = 9;
+	if(a == 11){
+	  int h;
+	  print(a);
+		a = a + b;
+		print(a);
+	} else {
+	    print(e);
 	}
-	while(1==1){
-		/*a = a +c;*/
+	while(b <= 8){
+	      print(b);
+	      b = 1 +b;
 	}
+	print(b);
 	return 0;
 }

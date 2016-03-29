@@ -17,6 +17,6 @@ int counter;
 void addInstruction(char * code, int nb, int * args);
 void writeProgramToFile(FILE * f);
 void updateJMF(int pos, int to);
-void updateWHILE(int pos, int val);
+void updateJMP(int pos, int to);
 
 #endif

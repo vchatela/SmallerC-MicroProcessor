@@ -25,6 +25,6 @@ void updateJMF(int pos, int to){
 	prog[pos].args[1]=to;
 } 
 
-void updateWHILE(int pos, int val){
-	prog[pos].args[0] = val;
+void updateJMP(int pos, int to){
+	prog[pos].args[0] = to;
 }

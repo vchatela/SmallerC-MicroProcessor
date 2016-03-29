@@ -71,4 +71,6 @@ int main(){
 
 
 TODO :
-afficher ligne de l'erreur
+afficher ligne de l'erreur 
+Utile ou pas de refaire une parse pour éviter les COP 1 1 ?
+

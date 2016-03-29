@@ -26,7 +26,7 @@ int find_symbol(char * name, int depth);
 void up_depth();
 void down_depth();
 
-void delete_depth_at(int dep);
+void delete_depth_at();
 
 
 #endif
