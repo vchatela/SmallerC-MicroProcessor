@@ -87,6 +87,7 @@ void DumpRow(void) {
  *------------------------------------------------------------------*/
 extern
 void PrintError(char *errorstring, ...) {
+  error = 1;
   static char errmsg[10000];
   va_list args;
 

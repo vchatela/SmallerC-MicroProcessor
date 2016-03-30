@@ -95,7 +95,7 @@ DECLARATION : tID
 		| tETOILE tID tEG EXPARITHMETIQUE
 	{add_symb($2,0,0,1); int args[2]; args[0] = find_symbol($2,depth); args[1] = $4; addInstruction("COP",2,args); current_row_temp--;}
 		| tETOILE tID tEG tADDR tID
-	{add_symb($2,1,0,1); int args[2]; args[0] = current_row_temp ; args[1]=find_symbol($5,depth); addInstruction("AFC",2,args) ;args[0] = find_symbol($2,depth); args[1] = current_row_temp; addInstruction("PCOPB",2,args);}
+	{int symb = find_symbol($5,depth); if(symb==-1){PrintError("Symbol %s does not exist.",$5);}else{add_symb($2,1,0,1); int args[2]; args[0] = current_row_temp ; args[1]=symb; addInstruction("AFC",2,args) ;args[0] = find_symbol($2,depth); args[1] = current_row_temp; addInstruction("PCOPB",2,args);}}
 		;
 
 AFFECTATIONSCONSTS : AFFECTATIONSCONST tVIR AFFECTATIONSCONSTS
@@ -104,25 +104,25 @@ AFFECTATIONSCONSTS : AFFECTATIONSCONST tVIR AFFECTATIONSCONSTS
 AFFECTATIONSCONST : tID tEG EXPARITHMETIQUE 
 	{ add_symb($1,1,1,1); int args[2]; args[0] = find_symbol($1,depth); args[1] = $3; addInstruction("COP",2,args); current_row_temp--;}
 		| tETOILE tID tEG tADDR tID
-	{add_symb($2,1,1,1); int args[2]; args[0] = current_row_temp ; args[1]=find_symbol($5,depth); addInstruction("AFC",2,args) ;args[0] = find_symbol($2,depth); args[1] = current_row_temp; addInstruction("PCOPB",2,args);};
+	{int symb = find_symbol($5,depth); if(symb==-1){PrintError("Symbol %s does not exist.",$5);}else{add_symb($2,1,1,1); int args[2]; args[0] = current_row_temp ; args[1]= symb; addInstruction("AFC",2,args) ;args[0] = find_symbol($2,depth); args[1] = current_row_temp; addInstruction("PCOPB",2,args);}};
 
 AFFECTATIONS : AFFECTATION tVIR { current_row_temp--;} AFFECTATIONS
 		| AFFECTATION{ current_row_temp--;} ;
 
 AFFECTATION : tID tEG EXPARITHMETIQUE
 	{ int pos = find_symbol($1,depth); 
-if(pos==-1){yyerror("Id n'existe pas.");}
-else{ if(getSymb(pos)->isConst){yyerror("Attention affectation sur un const.");/*TODO il serait bien d'afficher la ligne*/}
+if(pos==-1){PrintError("Symbol %s does not exist.",$1);}
+else{ if(getSymb(pos)->isConst){PrintError("Const affectation");/*TODO il serait bien d'afficher la ligne*/}
 	else{ int args[2]; args[0] = pos; args[1] = $3; addInstruction("COP",2,args); $$ = $3;}}}
 		| tETOILE tID tEG EXPARITHMETIQUE 
 	{ int pos = find_symbol($2,depth); 
-if(pos==-1){yyerror("Id n'existe pas.");}
-else{ if(getSymb(pos)->isConst){yyerror("Attention affectation sur un const.");/*TODO il serait bien d'afficher la ligne*/}
+if(pos==-1){PrintError("Symbol %s does not exist.",$2);}
+else{ if(getSymb(pos)->isConst){PrintError("Const affectation");/*TODO il serait bien d'afficher la ligne*/}
 	else{ int args[2]; args[0] = pos; args[1] = $4; addInstruction("PCOPB",2,args); $$ = $4;}}}
 		| tID tCO tNB tCF tEG EXPARITHMETIQUE
 	{ int pos = find_symbol($1,depth); 
-if(pos==-1){yyerror("Id n'existe pas.");}
-else{ if(0>$3 || getSymb(pos)->size <= $3){yyerror_tab("Accès hors du tableau AFC ",$1,$3);}
+if(pos==-1){PrintError("Symbol %s does not exist.",$1);}
+else{ if(0>$3 || getSymb(pos)->size <= $3){PrintError("Out of size of %s[%d]",$1,$3);}
 else{int args[2]; args[0] = pos + $3; args[1] = $6; addInstruction("COP",2,args); $$ = $3;}}};
 
 INSTRUCTIONS : 	AFFECTATIONS tPV INSTRUCTIONS
@@ -134,7 +134,7 @@ INSTRUCTIONS : 	AFFECTATIONS tPV INSTRUCTIONS
 			| 	FUNCT INSTRUCTIONS
 			|;
 
-FUNCT : tID tPO SUITEPARAMSFUNCT tPF tPV {int jump = jump_function($1,$3); if(jump == -1){yyerror_funct("Fonction inexistante", $1, $3);}else{int args[1]; args[0] = jump; addInstruction("CALL",1,args);}};
+FUNCT : tID tPO SUITEPARAMSFUNCT tPF tPV {int jump = jump_function($1,$3); if(jump == -1){PrintError("Unknown function %s with %d args", $1, $3);}else{int args[1]; args[0] = jump; addInstruction("CALL",1,args);}};
 
 SUITEPARAMSFUNCT : EXPARITHMETIQUE tVIR SUITEPARAMSFUNCT {$$ = 1 + $3;}
 	| EXPARITHMETIQUE {$$ = 1;};
@@ -153,15 +153,15 @@ EXPARITHMETIQUE : EXPARITHMETIQUE tPLUS EXPARITHMETIQUE
 				| tNB 
 	{ int args[2]; args[0] = current_row_temp; args[1] = $1; addInstruction("AFC",2,args); $$ = current_row_temp; current_row_temp++;}
 				| tID 
-	{ int args[2]; args[0] = current_row_temp; args[1] = find_symbol($1,depth); addInstruction("COP",2,args); $$ = current_row_temp; current_row_temp++;}
+	{ int pos = find_symbol($1,depth); if(pos==-1){PrintError("Symbol %s does not exist.",$1);}else{int args[2]; args[0] = current_row_temp; args[1] = pos; addInstruction("COP",2,args); $$ = current_row_temp; current_row_temp++;}}
 				| tADDR tID 
-	{ int args[2]; args[0] = current_row_temp ; args[1]=find_symbol($2,depth); addInstruction("AFC",2,args) ; $$ = current_row_temp; current_row_temp++;} /*a verifier*/
+	{ int pos = find_symbol($2,depth); if(pos==-1){PrintError("Symbol %s does not exist.",$2);}else{int args[2]; args[0] = current_row_temp ; args[1]=pos; addInstruction("AFC",2,args) ; $$ = current_row_temp; current_row_temp++;}} /*a verifier*/
 				| tETOILE tID 
-	{ int args[2]; args[0] = current_row_temp; args[1] = find_symbol($2,depth); addInstruction("PCOPB",2,args); $$ = current_row_temp; current_row_temp++;}
+	{ int pos = find_symbol($2,depth); if(pos==-1){PrintError("Symbol %s does not exist.",$2);}else{int args[2]; args[0] = current_row_temp; args[1] = pos; addInstruction("PCOPB",2,args); $$ = current_row_temp; current_row_temp++;}}
 				| tID tCO EXPARITHMETIQUE tCF
-	{ int args[3]; args[0] = current_row_temp; args[1] = find_symbol($1,depth) ;args[2] = $3; addInstruction("ADD",3,args); 
+	{ int pos = find_symbol($1,depth); if(pos==-1){PrintError("Symbol %s does not exist.",$1);}else{int args[3]; args[0] = current_row_temp; args[1] = pos ;args[2] = $3; addInstruction("ADD",3,args); 
 		args[0] = current_row_temp; args[1] = current_row_temp; addInstruction("PCOPA",2,args);
-	$$ = current_row_temp; current_row_temp++;};
+	$$ = current_row_temp; current_row_temp++;}};
 
 EXPCONDITIONNELLE : EXPARITHMETIQUE tOU EXPARITHMETIQUE 
 						{int args[3]; args[0] = $1; args[1] = $1;args[2] = $3; addInstruction("OR",3,args); $$= $1;current_row_temp--;}
@@ -188,14 +188,14 @@ IF : tIF tPO EXPCONDITIONNELLE {current_row_temp--;}tPF { int args[2]; args[0] =
 SUITEIF : tELSE {$1=counter; int args[1]; addInstruction("JMP",1,args);} BODY {updateJMP($1, counter); $$ =1;}
     | {$$=0;};
 
-WHILE : tWHILE {$1 = counter;} tPO EXPCONDITIONNELLE {  $3 = counter /*juste utile pour sauvegarder la val*/; int args[2]; args[0] = $4; addInstruction("JMF",2,args); current_row_temp--;} tPF BODY {int args[1]; args[0] = $1+1; addInstruction("JMP",1,args);updateJMF($3,counter);};
+WHILE : tWHILE {$1 = counter;} tPO EXPCONDITIONNELLE {  $3 = counter; int args[2]; args[0] = $4; addInstruction("JMF",2,args); current_row_temp--;} tPF BODY {int args[1]; args[0] = $1+1; addInstruction("JMP",1,args);updateJMF($3,counter);};
 
 RETURN : tRETURN EXPARITHMETIQUE tPV {/*TODO*/}
 		| tRETURN tPV;
 
-PRINT : tPRINT tPO tID tPF tPV {int args[1]; args[0] = find_symbol($3,depth); addInstruction("PRI",1,args);}
-	| tPRINT tPO tETOILE tID tPF tPV {int args[1]; args[0] = find_symbol(getSymb(find_symbol($4,depth))->name,depth); addInstruction("PRI",1,args);} /*A verifier*/
-	| tPRINT tPO tID tCO tNB tCF tPF tPV {int pos = find_symbol($3,depth); if(0>$5 || getSymb(pos)->size <= $5){yyerror_tab("Accès hors du tableau PRI ",$3,$5);}
+PRINT : tPRINT tPO tID tPF tPV {int pos = find_symbol($3,depth); if(pos==-1){PrintError("Symbol %s does not exist.",$3);}else{int args[1]; args[0] = pos; addInstruction("PRI",1,args);}}
+	| tPRINT tPO tETOILE tID tPF tPV {int args[1]; args[0] = find_symbol(getSymb(find_symbol($4,depth))->name,depth); addInstruction("PRI",1,args);} /*TODO : utiliser PCOP vers var tempo pour afficher ?*/
+	| tPRINT tPO tID tCO tNB tCF tPF tPV {int pos = find_symbol($3,depth); if(0>$5 || getSymb(pos)->size <= $5){PrintError("Out of size of %s[%d]",$3,$5);}
 else{int args[1]; args[0] = pos + $5; addInstruction("PRI",1,args);}};
 
 
@@ -206,14 +206,5 @@ void yyerror(char *s) {
 //  printf("Error '%s'\n", s);
 //  a more sophisticated error-function
  PrintError(s);
- error = 1;
-}
-
-int yyerror_tab(char *s, char * tab, int d) {
- fprintf(stderr,"%s %s[%d]\n",s, tab, d);
- error = 1;
-}
-int yyerror_funct(char *s, char * funct, int d) {
- fprintf(stderr,"%s : %s (%d params)\n",s, funct, d);
  error = 1;
 }
