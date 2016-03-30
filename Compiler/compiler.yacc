@@ -43,6 +43,7 @@ extern struct s_instruction prog[512];
 %type <value> AFFECTATION
 %type <value> tELSE
 %type <value> tPO
+%type <value> SUITEIF
 
 %union{int value; char * variable;}
 
@@ -178,8 +179,10 @@ EXPCONDITIONNELLE : EXPARITHMETIQUE tOU EXPARITHMETIQUE
 
 				|	AFFECTATION{$$ = $1;};
 
-IF : /*tIF tPO EXPCONDITIONNELLE {current_row_temp--;}tPF { int args[2]; args[0] = $3; $1 = counter; addInstruction("JMF",2,args);} BODY {updateJMF($1,counter-1);}
-    | */tIF tPO EXPCONDITIONNELLE {current_row_temp--;}tPF { int args[2]; args[0] = $3; $1 = counter; addInstruction("JMF",2,args);} BODY {updateJMF($1,counter-1); $2 = counter /*juste pour sauvegarde*/; int args[1]; addInstruction("JMP",1,args);} tELSE BODY {updateJMP($2, counter+1);} ;
+IF : tIF tPO EXPCONDITIONNELLE {current_row_temp--;}tPF { int args[2]; args[0] = $3; $1 = counter; addInstruction("JMF",2,args);} BODY {updateJMF($1,counter);} SUITEIF {suiteIfJMF($1,$9);};
+
+SUITEIF : tELSE {$1=counter; int args[1]; addInstruction("JMP",1,args);} BODY {updateJMP($1, counter); $$ =1;}
+    | {$$=0;};
 
 WHILE : tWHILE {$1 = counter;} tPO EXPCONDITIONNELLE {  $3 = counter /*juste utile pour sauvegarder la val*/; int args[2]; args[0] = $4; addInstruction("JMF",2,args); current_row_temp--;} tPF BODY {int args[1]; args[0] = $1+1; addInstruction("JMP",1,args);updateJMF($3,counter);};
 

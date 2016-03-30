@@ -28,3 +28,7 @@ void updateJMF(int pos, int to){
 void updateJMP(int pos, int to){
 	prog[pos].args[0] = to;
 }
+
+void suiteIfJMF(int pos, int to){
+	prog[pos].args[1]+=to;
+} 

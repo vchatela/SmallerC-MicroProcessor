@@ -5,13 +5,18 @@ int main(){
 	if(a == 11){
 	  int h;
 	  print(a);
-		a = a + b;
-		print(a);
+	  a = a + b;
+	  print(a);
 	} else {
 	    print(e);
 	}
+	if(a==14){
+	    print(b);
+	}
+	if(a==18){
+	    print(a);
+	}
 	while(b <= 8){
-	      print(b);
 	      b = 1 +b;
 	}
 	print(b);

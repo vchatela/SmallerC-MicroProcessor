@@ -18,5 +18,5 @@ void addInstruction(char * code, int nb, int * args);
 void writeProgramToFile(FILE * f);
 void updateJMF(int pos, int to);
 void updateJMP(int pos, int to);
-
+void suiteIfJMP(int pos, int to);
 #endif
