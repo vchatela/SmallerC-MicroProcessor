@@ -9,5 +9,8 @@ int main(){
 	  int w = 0;
 		a = a +b;
 	}
+	else{
+	  a = a +3; 
+	}
 	return 0;
 }

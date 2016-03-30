@@ -6,8 +6,8 @@ objects = y.tab.c compiler.h lex.yy.c y.tab.h y.output yacc assembler.asm
 
 prog = compiler
 
-yacc: y.tab.c lex.yy.c table_of_symbol.c table_of_function.c   
-	$(CC) y.tab.c lex.yy.c table_of_symbol.c table_of_function.c asm.c -ll -o $(prog)
+yacc: y.tab.c lex.yy.c table_of_symbol.c table_of_function.c main.c   
+	$(CC) y.tab.c lex.yy.c table_of_symbol.c main.c table_of_function.c asm.c -ll -o $(prog)
 
 y.tab.c: compiler.yacc
 	$(YACC) $(YFLAGS) compiler.yacc

@@ -3,10 +3,11 @@
 #include"table_of_symbol.h"
 #include"table_of_function.h"
 #include"asm.h"
+#include "main.h"
 
+#define YYERROR_VERBOSE 1
 
-int yyerror(char *s);
-int error= 0;
+extern int error;
 extern int current_row;
 extern int current_row_temp;
 extern int depth;
@@ -44,6 +45,9 @@ extern struct s_instruction prog[512];
 %type <value> tELSE
 %type <value> tPO
 %type <value> SUITEIF
+
+%defines
+%locations
 
 %union{int value; char * variable;}
 
@@ -196,8 +200,12 @@ else{int args[1]; args[0] = pos + $5; addInstruction("PRI",1,args);}};
 
 
 %%
-int yyerror(char *s) {
- fprintf(stderr,"%s\n",s);
+extern
+void yyerror(char *s) {
+// simple error-message
+//  printf("Error '%s'\n", s);
+//  a more sophisticated error-function
+ PrintError(s);
  error = 1;
 }
 
@@ -208,15 +216,4 @@ int yyerror_tab(char *s, char * tab, int d) {
 int yyerror_funct(char *s, char * funct, int d) {
  fprintf(stderr,"%s : %s (%d params)\n",s, funct, d);
  error = 1;
-}
-int main(void) {
-	counter = 0;	
-	yyparse();
-	if(!error){
-	  f = fopen("assembler.asm","w");
-	  writeProgramToFile(f);
-	  fclose(f);
-	}else{
-	  printf("Process executed returning error(s)\n");
-	}
 }
