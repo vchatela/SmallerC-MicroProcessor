@@ -14,7 +14,7 @@
 %}
 
 // les mots-clefs assembleur ainsi que le token tNB
-%token tADD tMUL tSUB tDIV tCOP tAFC tJMP tJMF tINF tSUP tEQU tPRI tNB tINFEQ tSUPEQ
+%token tADD tMUL tSOU tDIV tCOP tAFC tJMP tJMF tINF tSUP tEQU tPRI tNB tINFEQ tSUPEQ tOR tAND tRET tCALL tPCOPA tPCOPB
 
 %union { int nb; char * id; }	// crée deux champs "nb" et "id" dans yylval utilisables dans le Lex
 
@@ -32,19 +32,25 @@ Instructions : Instruction Instructions
 
 /* On appelle les fonctions du même nom dans le fichier C */
 Instruction : tADD tNB tNB tNB	{ mem_instr_inserer_add($2, $3, $4); }
+			| tRET 			{ mem_instr_inserer_ret(); }
+			| tCALL tNB 		{ mem_instr_inserer_call($2); }
 			| tMUL tNB tNB tNB	{ mem_instr_inserer_mul($2, $3, $4); }
-			| tSUB tNB tNB tNB	{ mem_instr_inserer_sub($2, $3, $4); }
+			| tSOU tNB tNB tNB	{ mem_instr_inserer_sub($2, $3, $4); }
 			| tDIV tNB tNB tNB	{ mem_instr_inserer_div($2, $3, $4); }
 			| tCOP tNB tNB		{ mem_instr_inserer_cop($2, $3); }
+			| tPCOPA tNB tNB	{ mem_instr_inserer_pcopa($2, $3); }
+			| tPCOPB tNB tNB	{ mem_instr_inserer_pcopb($2, $3); }
 			| tAFC tNB tNB		{ mem_instr_inserer_afc($2, $3); }
-			| tJMP tNB			{ mem_instr_inserer_jmp($2); }
+			| tJMP tNB		{ mem_instr_inserer_jmp($2); }
 			| tJMF tNB tNB		{ mem_instr_inserer_jmf($2, $3); }
 			| tINFEQ tNB tNB tNB	{ mem_instr_inserer_infeq($2, $3, $4); }
 			| tSUPEQ tNB tNB tNB	{ mem_instr_inserer_supeq($2, $3, $4); }
 			| tINF tNB tNB tNB	{ mem_instr_inserer_inf($2, $3, $4); }
 			| tSUP tNB tNB tNB	{ mem_instr_inserer_sup($2, $3, $4); }
+			| tAND tNB tNB tNB	{ mem_instr_inserer_and($2, $3, $4); }
+			| tOR tNB tNB tNB	{ mem_instr_inserer_or($2, $3, $4); }
 			| tEQU tNB tNB tNB	{ mem_instr_inserer_equ($2, $3, $4); }
-			| tPRI tNB 			{ mem_instr_inserer_pri($2); }
+			| tPRI tNB 		{ mem_instr_inserer_pri($2); }
 			;
 %%
 

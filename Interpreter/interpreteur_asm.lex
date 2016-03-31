@@ -4,10 +4,13 @@
 %}
 
 %%
-
+"RET"	return tRET;
+"CALL"	return tCALL;
+"OR"	return tOR;
+"AND" 	return tAND;
 "ADD"	return tADD;
 "MUL"	return tMUL; 
-"SUB"	return tSUB; 
+"SOU"	return tSOU; 
 "DIV"	return tDIV; 
 "COP"	return tCOP; 
 "AFC"	return tAFC; 
@@ -19,6 +22,8 @@
 "SUP"	return tSUP; 
 "EQU"	return tEQU; 
 "PRI"	return tPRI;
+"PCOPA"	return tPCOPA;
+"PCOPB" return tPCOPB;
 
 [ \t\n]+ ;
 

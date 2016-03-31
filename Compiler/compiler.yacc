@@ -64,7 +64,7 @@ Dfct : tINT tID tPO PARAMS tPF {add_funct($2,0,$4,counter);} BODY {addInstructio
 	/*| tINT tETOILE tID tPO PARAMS tPF BODY {}*/
 	;
 
-Main : tINT tMAIN {add_funct("main",0,0,counter);} tPO tPF BODY {print_table_funct();};
+Main : tINT tMAIN {add_funct("main",0,0,counter);} tPO tPF BODY {};
 
 PARAMS : SUITEPARAMS {$$ = $1;}
 		| {$$ = 0;};
@@ -163,9 +163,9 @@ EXPARITHMETIQUE : EXPARITHMETIQUE tPLUS EXPARITHMETIQUE
 		args[0] = current_row_temp; args[1] = current_row_temp; addInstruction("PCOPA",2,args);
 	$$ = current_row_temp; current_row_temp++;}};
 
-EXPCONDITIONNELLE : EXPARITHMETIQUE tOU EXPARITHMETIQUE 
+EXPCONDITIONNELLE : EXPCONDITIONNELLE tOU EXPCONDITIONNELLE 
 						{int args[3]; args[0] = $1; args[1] = $1;args[2] = $3; addInstruction("OR",3,args); $$= $1;current_row_temp--;}
-				| 	EXPARITHMETIQUE tET EXPARITHMETIQUE {	int args[3]; args[0] = $1; args[1] = $1;args[2] = $3; addInstruction("AND",3,args);
+				| 	EXPCONDITIONNELLE tET EXPCONDITIONNELLE {	int args[3]; args[0] = $1; args[1] = $1;args[2] = $3; addInstruction("AND",3,args);
 										;$$= $1;current_row_temp--;}
 				| 	EXPARITHMETIQUE tINFEG EXPARITHMETIQUE { int args[3]; args[0] = $1; args[1] = $1;args[2] = $3; addInstruction("INFEQ",3,args);
 										;$$= $1;current_row_temp--;}

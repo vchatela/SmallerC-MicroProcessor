@@ -24,6 +24,8 @@ void mem_instr_inserer_supeq(int resultat, int op1, int op2);
 void mem_instr_inserer_inf(int resultat, int op1, int op2);
 void mem_instr_inserer_sup(int resultat, int op1, int op2);
 void mem_instr_inserer_equ(int resultat, int op1, int op2);
+void mem_instr_inserer_ret();
+void mem_instr_inserer_call(int addr);
 
 void mem_instr_inserer_pri(int adresse);
 

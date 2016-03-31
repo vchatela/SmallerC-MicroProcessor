@@ -50,6 +50,23 @@ void mem_instr_inserer_jmp(int no_instruction) {
 	mem_instr.nb_instructions++;
 }
 
+void mem_instr_inserer_ret() {
+	
+	mem_instr.instructions[mem_instr.nb_instructions].id = "RET";
+	mem_instr.instructions[mem_instr.nb_instructions].nb_args = 0;
+	
+	mem_instr.nb_instructions++;
+}
+
+void mem_instr_inserer_call(int addr) {
+	
+	mem_instr.instructions[mem_instr.nb_instructions].id = "CALL";
+	mem_instr.instructions[mem_instr.nb_instructions].nb_args = 1;
+	mem_instr.instructions[mem_instr.nb_instructions].args[0] = addr;
+	
+	mem_instr.nb_instructions++;
+}
+
 void mem_instr_inserer_jmf(int adresse, int no_instruction) {
 	
 	mem_instr.instructions[mem_instr.nb_instructions].id = "JMF";
@@ -115,6 +132,28 @@ void mem_instr_inserer_equ(int resultat, int op1, int op2) {
 	mem_instr.nb_instructions++;
 }
 
+void mem_instr_inserer_and(int resultat, int op1, int op2) {
+
+	mem_instr.instructions[mem_instr.nb_instructions].id = "AND";
+	mem_instr.instructions[mem_instr.nb_instructions].nb_args = 3;
+	mem_instr.instructions[mem_instr.nb_instructions].args[0] = resultat;
+	mem_instr.instructions[mem_instr.nb_instructions].args[1] = op1;
+	mem_instr.instructions[mem_instr.nb_instructions].args[2] = op2;
+	
+	mem_instr.nb_instructions++;
+}
+
+void mem_instr_inserer_or(int resultat, int op1, int op2) {
+
+	mem_instr.instructions[mem_instr.nb_instructions].id = "OR";
+	mem_instr.instructions[mem_instr.nb_instructions].nb_args = 3;
+	mem_instr.instructions[mem_instr.nb_instructions].args[0] = resultat;
+	mem_instr.instructions[mem_instr.nb_instructions].args[1] = op1;
+	mem_instr.instructions[mem_instr.nb_instructions].args[2] = op2;
+	
+	mem_instr.nb_instructions++;
+}
+
 void mem_instr_inserer_pri(int adresse) {
 
 	mem_instr.instructions[mem_instr.nb_instructions].id = "PRI";
@@ -138,7 +177,7 @@ void mem_instr_inserer_add(int resultat, int op1, int op2) {
 
 void mem_instr_inserer_sub(int resultat, int op1, int op2) {
 	
-	mem_instr.instructions[mem_instr.nb_instructions].id = "SUB";
+	mem_instr.instructions[mem_instr.nb_instructions].id = "SOU";
 	mem_instr.instructions[mem_instr.nb_instructions].nb_args = 3;
 	mem_instr.instructions[mem_instr.nb_instructions].args[0] = resultat;
 	mem_instr.instructions[mem_instr.nb_instructions].args[1] = op1;

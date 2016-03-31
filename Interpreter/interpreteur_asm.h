@@ -4,6 +4,8 @@
 #define NB_SYMBOLES_MAX 256
 
 void add(int addr_resultat, int addr_op1, int addr_op2);
+void ret();
+void call(int addr);
 void sub(int addr_resultat, int addr_op1, int addr_op2);
 void mul(int addr_resultat, int addr_op1, int addr_op2);
 void div(int addr_resultat, int addr_op1, int addr_op2);
@@ -13,6 +15,8 @@ void pri(int addr_resultat);
 void inf(int addr_resultat, int addr_op1, int addr_op2);
 void sup(int addr_resultat, int addr_op1, int addr_op2);
 void equ(int addr_resultat, int addr_op1, int addr_op2);
+void and(int addr_resultat, int addr_op1, int addr_op2);
+void or(int addr_resultat, int addr_op1, int addr_op2);
 void jmp(int ligne);
 void jmf(int cond, int ligne) ;
 
