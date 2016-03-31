@@ -54,8 +54,10 @@ extern struct s_instruction prog[512];
 %left tPLUS tMOINS
 %right tETOILE tDIV tEG
 
-%start Prg
+%start File
 %%
+
+File :  /*var globale ?*/  Prg;
 
 Prg : Dfct Prg
 	|Main;
@@ -190,13 +192,12 @@ SUITEIF : tELSE {$1=counter; int args[1]; addInstruction("JMP",1,args);} BODY {u
 
 WHILE : tWHILE {$1 = counter;} tPO EXPCONDITIONNELLE {  $3 = counter; int args[2]; args[0] = $4; addInstruction("JMF",2,args); current_row_temp--;} tPF BODY {int args[1]; args[0] = $1+1; addInstruction("JMP",1,args);updateJMF($3,counter);};
 
-RETURN : tRETURN EXPARITHMETIQUE tPV {/*TODO*/}
-		| tRETURN tPV;
+RETURN : tRETURN EXPARITHMETIQUE tPV {int args[1]; args[0] = $2; addInstruction("EXT",1,args); /*TODO jump to the end of the function / main */}
+		| tRETURN tPV {addInstruction("NOP",0,NULL);/*TODO jump to the end of the function / main */};
 
 PRINT : tPRINT tPO tID tPF tPV {int pos = find_symbol($3,depth); if(pos==-1){PrintError("Symbol %s does not exist.",$3);}else{int args[1]; args[0] = pos; addInstruction("PRI",1,args);}}
-	| tPRINT tPO tETOILE tID tPF tPV {int args[1]; args[0] = find_symbol(getSymb(find_symbol($4,depth))->name,depth); addInstruction("PRI",1,args);} /*TODO : utiliser PCOP vers var tempo pour afficher ?*/
-	| tPRINT tPO tID tCO tNB tCF tPF tPV {int pos = find_symbol($3,depth); if(0>$5 || getSymb(pos)->size <= $5){PrintError("Out of size of %s[%d]",$3,$5);}
-else{int args[1]; args[0] = pos + $5; addInstruction("PRI",1,args);}};
+	| tPRINT tPO tETOILE tID tPF tPV {int args[1]; args[0] = find_symbol(getSymb(find_symbol($4,depth))->name,depth); addInstruction("PRI",1,args);}
+	| tPRINT tPO tID tCO tNB tCF tPF tPV {int pos = find_symbol($3,depth); if(0>$5 || getSymb(pos)->size <= $5){PrintError("Out of size of %s[%d]",$3,$5);} else{int args[1]; args[0] = pos + $5; addInstruction("PRI",1,args);}};
 
 
 %%

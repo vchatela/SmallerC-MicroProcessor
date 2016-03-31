@@ -6,6 +6,8 @@
 void add(int addr_resultat, int addr_op1, int addr_op2);
 void ret();
 void call(int addr);
+void nop();
+void ext(int addr);
 void sub(int addr_resultat, int addr_op1, int addr_op2);
 void mul(int addr_resultat, int addr_op1, int addr_op2);
 void div(int addr_resultat, int addr_op1, int addr_op2);

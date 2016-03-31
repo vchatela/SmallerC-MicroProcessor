@@ -273,11 +273,13 @@ int main(int argc, char *argv[]) {
 	  printf("Cannot open ouput\n");
 	  return 12;
     }
+    /*Write and optimize code !*/
     writeProgramToFile(f);
     fclose(f);
   }else{
 	printf("Process executed returning error(s)\n");
   }
+  printf("\n");
   /*================================================================*/
   /* ending... -----------------------------------------------------*/
   free(buffer);

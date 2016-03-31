@@ -14,7 +14,7 @@
 %}
 
 // les mots-clefs assembleur ainsi que le token tNB
-%token tADD tMUL tSOU tDIV tCOP tAFC tJMP tJMF tINF tSUP tEQU tPRI tNB tINFEQ tSUPEQ tOR tAND tRET tCALL tPCOPA tPCOPB
+%token tADD tMUL tSOU tDIV tCOP tAFC tJMP tJMF tINF tSUP tEQU tPRI tNB tINFEQ tSUPEQ tOR tAND tRET tCALL tPCOPA tPCOPB tNOP tEXT
 
 %union { int nb; char * id; }	// crée deux champs "nb" et "id" dans yylval utilisables dans le Lex
 
@@ -32,6 +32,8 @@ Instructions : Instruction Instructions
 
 /* On appelle les fonctions du même nom dans le fichier C */
 Instruction : tADD tNB tNB tNB	{ mem_instr_inserer_add($2, $3, $4); }
+			| tNOP			{ mem_instr_inserer_nop(); }
+			| tEXT tNB		{ mem_instr_inserer_ext($2); }
 			| tRET 			{ mem_instr_inserer_ret(); }
 			| tCALL tNB 		{ mem_instr_inserer_call($2); }
 			| tMUL tNB tNB tNB	{ mem_instr_inserer_mul($2, $3, $4); }

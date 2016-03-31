@@ -230,6 +230,21 @@ void mem_instr_inserer_pcopb(int addr_pointeur, int addr_valeur) {
 	mem_instr.nb_instructions++;
 }
 
+void mem_instr_inserer_nop(){
+    mem_instr.instructions[mem_instr.nb_instructions].id = "NOP";
+    mem_instr.instructions[mem_instr.nb_instructions].nb_args = 0;
+    
+    mem_instr.nb_instructions++;
+}
+
+void mem_instr_inserer_ext(int addr){
+    mem_instr.instructions[mem_instr.nb_instructions].id = "EXT";
+    mem_instr.instructions[mem_instr.nb_instructions].nb_args = 1;
+    mem_instr.instructions[mem_instr.nb_instructions].args[0] = addr;
+    
+    mem_instr.nb_instructions++;
+}
+
 void mem_instr_maj_dernier_jmx(int ligne) {
 	int i = mem_instr.nb_instructions - 1, continuer = 1;
 	

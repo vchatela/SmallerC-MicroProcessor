@@ -6,6 +6,8 @@
 %%
 "RET"	return tRET;
 "CALL"	return tCALL;
+"NOP"	return tNOP;
+"EXT"	return tEXT;
 "OR"	return tOR;
 "AND" 	return tAND;
 "ADD"	return tADD;

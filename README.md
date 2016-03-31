@@ -6,10 +6,13 @@
 ## Simplify C
 The input language is a C-like language which recognize:
 - functions and main
-- only integer (at beginning)
+- only integer
 - multiple declaration of const like `const int i, j=3,k;` (only in main)
 - Basic arithmetic operations
 - `printf(var)` whith var as a variable
+- if/else while
+- tabulars
+- pointers
 
 ## Assembler 
 - **Addition** : `ADD @result @op1 @op2`
@@ -20,13 +23,31 @@ The input language is a C-like language which recognize:
 - **Affectation** : `AFC @result @op1 @op2`
 - **Jump** : `JMP instruction_number`
 - **Jump if false** : `JMF @X instruction_number`
-- **Comparison** : `INF @result @op1 @op2` or `SUP @result @op1 @op2` or `EQU @result @op1 @op2`
+- **Comparison** : `INF(EQ) @result @op1 @op2` or `SUP(EQ) @result @op1 @op2` or `EQU @result @op1 @op2`
 - **Print** : `PRI result`
-
+- **Pointer1** : `PCOPA @pointedvalue @pointer `
+- **Pointer2** : `PCOPB @pointer @pointedvalue`
+- **Call function** : `CALL @jump `
+- **End function** : `RET`
+- **Return** : `EXT @val`
+- **Nothing** : `NOP`
+- **And** : `AND @result @op1 @op2`
+- **Or** : `OR @result @op1 @op2`
 
 #Implementation
 ## Development of a simplify C Compiler using Lex and Yacc
-- Application of automata and languages
+- Lexer to find tokens
+- Type 2 Grammar for C (using table of labels, functions, symbols)
+- Upgrade : show line and token when error
 
-## Conception of a RISC microprocessor with pipeline
-
+## Conception of a RISC microprocessor with pipeline using VHDL and Spartan 6
+Differents components :
+- 16 bits Compter
+- Instruction memory
+- Data memory
+- Direct memory access
+- Arithmetic and Logic Unity (ALU)
+- Data path
+- Control Unity
+- Unity of detection of contingencies
+- 5 stages pipeline artchitecture

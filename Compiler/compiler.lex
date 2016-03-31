@@ -13,9 +13,9 @@
 %option yylineno
 WHITESPACES [ \t\n]+
 DIGIT       [0-9]
-NUMBER      {DIGIT}+
-EXP         {NUMBER}[eE][+-]?{NUMBER}
-REEL        {NUMBER}("."{NUMBER})?{EXP}?
+NUMBER      [-]?{DIGIT}+
+EXP         [-]?{NUMBER}[eE][+-]?{NUMBER}
+REEL        [-]?{NUMBER}("."{NUMBER})?{EXP}?
 %x comment
         
 %%

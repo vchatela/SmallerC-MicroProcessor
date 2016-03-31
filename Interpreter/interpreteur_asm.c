@@ -61,6 +61,15 @@ void pri(int addr_resultat)
 	no_instr_courante++;
 }
 
+void nop(){
+  no_instr_courante++;
+}
+
+void ext(int addr){
+  printf("\t\t\t Process exited with code %d", mem_donnees[addr]);	
+  no_instr_courante++;
+}
+
 void ret(){
     //restore le contexte et met la valeur de retour au bon endroit
   no_instr_courante++;
@@ -163,12 +172,27 @@ void jmf(int cond, int ligne) {
 		no_instr_courante++;
 	}
 }
+int get_main_addr(){
+	// read from bottom and return last_ret + 1
+	int size = mem_instr_nb_instructions();
+	int i;
+	Instruction instruction_courante;
+	
+	for (i = size-1; i > 0; i--) {
+	  instruction_courante = mem_instr_get_instruction(i);
+	    if(strcmp("RET", instruction_courante.id) == 0){
+		return i+1; // do not check if size + 1 because grammar force to have the main and so 
+	    }
+	}
+	//if there is not a function the main start at 0
+	return 0;
+}
 
 void interpreter() {
 	int i;
 	Instruction instruction_courante;
-	
-	no_instr_courante = 0;
+	no_instr_courante = get_main_addr();
+	//no_instr_courante = 0;
 	
 	while (no_instr_courante < mem_instr_nb_instructions()) {
 		instruction_courante = mem_instr_get_instruction(no_instr_courante);
@@ -194,6 +218,10 @@ void interpreter() {
 			ret();
 		} else if (strcmp("CALL", instruction_courante.id) == 0) {
 			call(instruction_courante.args[0]); 
+		} else if (strcmp("NOP", instruction_courante.id) == 0) {
+			nop();
+		} else if (strcmp("EXT", instruction_courante.id) == 0) {
+			ext(instruction_courante.args[0]); 
 		} else if (strcmp("MUL", instruction_courante.id) == 0) {
 			mul(instruction_courante.args[0], instruction_courante.args[1], instruction_courante.args[2]);
 			// printf("\t{%d@<%d> = %d@<%d> * %d<%d>}", mem_donnees[instruction_courante.args[0]], instruction_courante.args[0], mem_donnees[instruction_courante.args[1]], instruction_courante.args[1], mem_donnees[instruction_courante.args[2]], instruction_courante.args[2]); 
