@@ -41,7 +41,7 @@ The input language is a C-like language which recognize:
 - Upgrade : show line and token when error
 
 ## Conception of a RISC microprocessor with pipeline using VHDL and Spartan 6
-Differents components :
+Different components :
 - 16 bits Compter
 - Instruction memory
 - Data memory
