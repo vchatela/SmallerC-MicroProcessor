@@ -22,6 +22,10 @@ int f(int a){
   return e;
 }
 
+int f(){
+  int h =3;
+}
+
 int main(){
 	int e, b=3;/*,*c,*d=&c;*/
 	int a = 14;

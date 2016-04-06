@@ -17,6 +17,7 @@ void add_funct(char * name, int type_ret, int nb_param,int jump){
 
 void print_table_funct(){
     int i;
+    printf("\n\n");
     printf("/********** Tab Functions ************/ \n");
     for(i = 0; i < current_row_funct;i++){
 	    printf("Nom : %s Type_Ret : %d Nb_param : %d Jump : %d ", tab_funct[i].name, tab_funct[i].type_ret, tab_funct[i].nb_param, tab_funct[i].jump);

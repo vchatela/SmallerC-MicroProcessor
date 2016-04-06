@@ -15,7 +15,6 @@ extern int counter;
 
 FILE * f;
 extern struct s_instruction prog[512];
-/*pointer d'instruction*/
 %}
 
 %token tMAIN
@@ -34,6 +33,8 @@ extern struct s_instruction prog[512];
 
 %type <variable> tID
 %type <value> tNB
+%type <value> INSTRUCTIONS
+%type <value> BODY
 %type <value> SUITEPARAMS
 %type <value> SUITEPARAMSFUNCT
 %type <value> PARAMS
@@ -60,9 +61,9 @@ extern struct s_instruction prog[512];
 File :  /*var globale ?*/  {int args[1]; addInstruction("JMP",1,args);}Prg;
 
 Prg : Dfct Prg
-	|Main {print_table_funct();};
+	|Main {if(debug){print_table_funct();}};
 
-Dfct : tINT tID tPO PARAMS tPF {add_funct($2,0,$4,counter);} BODY {/**TODO : retirer deuxieme RET**/ addInstruction("RET",0,NULL);};
+Dfct : tINT tID tPO PARAMS tPF {add_funct($2,0,$4,counter);} BODY { if($7==1){addInstruction("RET",0,NULL);}};
 
 Main : tINT tMAIN {add_funct("main",0,0,counter);updateJMP(0, counter);} tPO tPF BODY {};
 
@@ -74,7 +75,7 @@ SUITEPARAMS : PARAM tVIR SUITEPARAMS {$$ = 1 + $3;}
 
 PARAM : tINT tID {add_symb($2,1,0,1);}; 
 	
-BODY : tAO {up_depth();} DECLARATIONS INSTRUCTIONS {if(debug){print_table_symb();}} tAF {delete_depth_at();down_depth(); };
+BODY : tAO {up_depth();} DECLARATIONS INSTRUCTIONS { if(debug){print_table_symb();}} tAF {delete_depth_at();down_depth(); $$= $4;};
 
 DECLARATIONS : tINT SUITEDECLARATIONS tPV DECLARATIONS
 	| tCONST tINT AFFECTATIONSCONSTS tPV DECLARATIONS 
@@ -146,14 +147,14 @@ else{int args[2]; args[0] = pos + $3; args[1] = $6; addInstruction("COP",2,args)
 		| tID tMOINS tMOINS 
 	{}*/;
 
-INSTRUCTIONS : 	AFFECTATIONS tPV INSTRUCTIONS
-			| 	WHILE INSTRUCTIONS
-			|	IF INSTRUCTIONS	
-			| 	RETURN
-			|	tPV INSTRUCTIONS
-			| 	PRINT INSTRUCTIONS
-			| 	FUNCT INSTRUCTIONS
-			|;
+INSTRUCTIONS : 	AFFECTATIONS tPV INSTRUCTIONS {$$=0;}
+			| 	WHILE INSTRUCTIONS {$$=0;}
+			|	IF INSTRUCTIONS {$$=0;}
+			| 	RETURN {$$=1;}
+			|	tPV INSTRUCTIONS {$$=0;}
+			| 	PRINT INSTRUCTIONS {$$=0;}
+			| 	FUNCT INSTRUCTIONS {$$=0;}
+			| {$$=0;};
 
 FUNCT : tID tPO SUITEPARAMSFUNCT tPF tPV {int jump = jump_function($1,$3); if(jump == -1){PrintError("Unknown function %s with %d args", $1, $3);}else{int args[1]; args[0] = jump; addInstruction("CALL",1,args);}};
 

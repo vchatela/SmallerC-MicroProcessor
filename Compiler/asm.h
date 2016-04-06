@@ -4,6 +4,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h> 
+#define MAX 512
 
 struct s_instruction{
 	char codeOp[6]; //PCOPA\0
@@ -11,7 +12,7 @@ struct s_instruction{
 	int nb_args;
 };
 
-struct s_instruction prog[512];
+struct s_instruction prog[MAX];
 int counter;
 
 void addInstruction(char * code, int nb, int * args);

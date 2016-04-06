@@ -37,13 +37,3 @@ void updateJMP(int pos, int to){
 void suiteIfJMF(int pos, int to){
 	prog[pos].args[1]+=to;
 } 
-
-void optimisation(){
-    /*if(strcmp(prog[i].codeOp,"COP") == 0){
-	      for(j=0;j< prog[i].nb_args; j++){
-			  args[j] = prog[i].args[j];
-	      }
-	      if(args[0]==args[1]) // COP a a
-		  continue;	// on n'écrit pas l'opération
-	    }*/
-}

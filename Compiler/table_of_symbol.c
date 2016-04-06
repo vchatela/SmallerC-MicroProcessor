@@ -50,6 +50,7 @@ int find_symbol(char * name, int depth){
 
 void print_table_symb(){
 	int i;
+	printf("\n\n");
 	printf("/********** Tab Symbol ************/ \n");
 	for(i = 0; i < current_row;i++){
 		printf("Nom : %s Init : %d Profondeur : %d Const : %d ", tab_symb[i].name, tab_symb[i].init, tab_symb[i].depth, tab_symb[i].isConst);
