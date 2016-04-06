@@ -191,8 +191,8 @@ int get_main_addr(){
 void interpreter() {
 	int i;
 	Instruction instruction_courante;
-	no_instr_courante = get_main_addr();
-	//no_instr_courante = 0;
+	//no_instr_courante = get_main_addr();
+	no_instr_courante = 0;
 	
 	while (no_instr_courante < mem_instr_nb_instructions()) {
 		instruction_courante = mem_instr_get_instruction(no_instr_courante);

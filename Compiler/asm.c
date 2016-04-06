@@ -3,14 +3,7 @@
 void writeProgramToFile(FILE * f){
 	int i,j;
 	int args[3];
-	for(i=0; i< counter-1; i++){
-	    if(strcmp(prog[i].codeOp,"COP") == 0){
-	      for(j=0;j< prog[i].nb_args; j++){
-			  args[j] = prog[i].args[j];
-	      }
-	      if(args[0]==args[1]) // COP a a
-		  continue;	// on n'écrit pas l'opération
-	    }
+	for(i=0; i< counter; i++){
 	    fprintf(f,"%s ",prog[i].codeOp);
 	    for(j=0;j< prog[i].nb_args; j++){
 		    fprintf(f, "%d ",prog[i].args[j]);
@@ -44,3 +37,13 @@ void updateJMP(int pos, int to){
 void suiteIfJMF(int pos, int to){
 	prog[pos].args[1]+=to;
 } 
+
+void optimisation(){
+    /*if(strcmp(prog[i].codeOp,"COP") == 0){
+	      for(j=0;j< prog[i].nb_args; j++){
+			  args[j] = prog[i].args[j];
+	      }
+	      if(args[0]==args[1]) // COP a a
+		  continue;	// on n'écrit pas l'opération
+	    }*/
+}

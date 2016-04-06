@@ -57,16 +57,14 @@ extern struct s_instruction prog[512];
 %start File
 %%
 
-File :  /*var globale ?*/  Prg;
+File :  /*var globale ?*/  {int args[1]; addInstruction("JMP",1,args);}Prg;
 
 Prg : Dfct Prg
-	|Main;
+	|Main {print_table_funct();};
 
-Dfct : tINT tID tPO PARAMS tPF {add_funct($2,0,$4,counter);} BODY {addInstruction("RET",0,NULL);}
-	/*| tINT tETOILE tID tPO PARAMS tPF BODY {}*/
-	;
+Dfct : tINT tID tPO PARAMS tPF {add_funct($2,0,$4,counter);} BODY {/**TODO : retirer deuxieme RET**/ addInstruction("RET",0,NULL);};
 
-Main : tINT tMAIN {add_funct("main",0,0,counter);} tPO tPF BODY {};
+Main : tINT tMAIN {add_funct("main",0,0,counter);updateJMP(0, counter);} tPO tPF BODY {};
 
 PARAMS : SUITEPARAMS {$$ = $1;}
 		| {$$ = 0;};
@@ -74,11 +72,9 @@ PARAMS : SUITEPARAMS {$$ = $1;}
 SUITEPARAMS : PARAM tVIR SUITEPARAMS {$$ = 1 + $3;}
 	| PARAM {$$ = 1;};
 
-PARAM : tINT tID {/*QUOI EN FAIRE*/}
-	/*| tINT tETOILE tID {}*/
-	; 
+PARAM : tINT tID {add_symb($2,1,0,1);}; 
 	
-BODY : tAO {up_depth();} DECLARATIONS INSTRUCTIONS {/*print_table_symb();*/} tAF {delete_depth_at();down_depth(); };
+BODY : tAO {up_depth();} DECLARATIONS INSTRUCTIONS {if(debug){print_table_symb();}} tAF {delete_depth_at();down_depth(); };
 
 DECLARATIONS : tINT SUITEDECLARATIONS tPV DECLARATIONS
 	| tCONST tINT AFFECTATIONSCONSTS tPV DECLARATIONS 
@@ -111,21 +107,44 @@ AFFECTATIONSCONST : tID tEG EXPARITHMETIQUE
 AFFECTATIONS : AFFECTATION tVIR { current_row_temp--;} AFFECTATIONS
 		| AFFECTATION{ current_row_temp--;} ;
 
+/** AFFECTATION sur undeclared ! **/
+		
 AFFECTATION : tID tEG EXPARITHMETIQUE
 	{ int pos = find_symbol($1,depth); 
 if(pos==-1){PrintError("Symbol %s does not exist.",$1);}
-else{ if(getSymb(pos)->isConst){PrintError("Const affectation");/*TODO il serait bien d'afficher la ligne*/}
-	else{ int args[2]; args[0] = pos; args[1] = $3; addInstruction("COP",2,args); $$ = $3;}}}
+else{ if(getSymb(pos)->isConst){PrintError("Const affectation");}
+	else{ int args[2]; args[0] = pos; args[1] = $3; addInstruction("COP",2,args);}}}
 		| tETOILE tID tEG EXPARITHMETIQUE 
 	{ int pos = find_symbol($2,depth); 
 if(pos==-1){PrintError("Symbol %s does not exist.",$2);}
-else{ if(getSymb(pos)->isConst){PrintError("Const affectation");/*TODO il serait bien d'afficher la ligne*/}
-	else{ int args[2]; args[0] = pos; args[1] = $4; addInstruction("PCOPB",2,args); $$ = $4;}}}
+else{ if(getSymb(pos)->isConst){PrintError("Const affectation");}
+	else{ int args[2]; args[0] = pos; args[1] = $4; addInstruction("PCOPB",2,args);}}}
 		| tID tCO tNB tCF tEG EXPARITHMETIQUE
 	{ int pos = find_symbol($1,depth); 
 if(pos==-1){PrintError("Symbol %s does not exist.",$1);}
 else{ if(0>$3 || getSymb(pos)->size <= $3){PrintError("Out of size of %s[%d]",$1,$3);}
-else{int args[2]; args[0] = pos + $3; args[1] = $6; addInstruction("COP",2,args); $$ = $3;}}};
+else{int args[2]; args[0] = pos + $3; args[1] = $6; addInstruction("COP",2,args);}}}
+		/*| tPLUS tPLUS tID
+	{
+	int pos = find_symbol($3,depth); if(pos==-1){PrintError("Symbol %s does not exist.",$3);}else{
+	  int args[3]; 
+	  args[0] = current_row_temp; args[1] = pos; addInstruction("COP",2,args);
+	  args[0] = current_row_temp; args[1] = 1; addInstruction("AFC",2,args); current_row_temp++;
+	  args[0] = current_row_temp; args[1] = current_row_temp; args[2] = $3; addInstruction("ADD",3,args);
+	}
+	}
+		| tMOINS tMOINS tID
+	{
+	int pos = find_symbol($3,depth); 
+	if(pos==-1){PrintError("Symbol %s does not exist.",$3);}
+	else{int args[2]; args[0] = current_row_temp; args[1] = pos; addInstruction("COP",2,args); current_row_temp++;
+	
+	}
+	}	
+		| tID tPLUS tPLUS
+	{}	
+		| tID tMOINS tMOINS 
+	{}*/;
 
 INSTRUCTIONS : 	AFFECTATIONS tPV INSTRUCTIONS
 			| 	WHILE INSTRUCTIONS
@@ -192,8 +211,12 @@ SUITEIF : tELSE {$1=counter; int args[1]; addInstruction("JMP",1,args);} BODY {u
 
 WHILE : tWHILE {$1 = counter;} tPO EXPCONDITIONNELLE {  $3 = counter; int args[2]; args[0] = $4; addInstruction("JMF",2,args); current_row_temp--;} tPF BODY {int args[1]; args[0] = $1+1; addInstruction("JMP",1,args);updateJMF($3,counter);};
 
-RETURN : tRETURN EXPARITHMETIQUE tPV {int args[1]; args[0] = $2; addInstruction("EXT",1,args); /*TODO jump to the end of the function / main */}
-		| tRETURN tPV {addInstruction("NOP",0,NULL);/*TODO jump to the end of the function / main */};
+RETURN : tRETURN EXPARITHMETIQUE tPV {int args[1]; args[0] = $2; addInstruction("EXT",1,args); addInstruction("RET",0,NULL);}
+		| tRETURN tPV {addInstruction("RET",0,NULL);};
+
+		
+/**TODO : comment trouver premiere ligne du main ???**/
+
 
 PRINT : tPRINT tPO tID tPF tPV {int pos = find_symbol($3,depth); if(pos==-1){PrintError("Symbol %s does not exist.",$3);}else{int args[1]; args[0] = pos; addInstruction("PRI",1,args);}}
 	| tPRINT tPO tETOILE tID tPF tPV {int args[1]; args[0] = find_symbol(getSymb(find_symbol($4,depth))->name,depth); addInstruction("PRI",1,args);}
