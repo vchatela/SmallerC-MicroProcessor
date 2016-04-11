@@ -33,31 +33,31 @@ use IEEE.STD_LOGIC_unsigned.ALL;
 
 entity Banc_registres is
 generic( width : integer:= 32; -- 4 octets d'adr => 32 bits 
-				size_mem: integer:=8;
-				addr_size : integer:=4); 
+				size_inst: integer:=8;
+				addr_size_BR : integer:=4); 
 
-    Port ( ADD_A : in  STD_LOGIC_VECTOR (addr_size-1 downto 0);
-           ADD_B : in  STD_LOGIC_VECTOR (addr_size-1 downto 0);
-           ADD_W : in  STD_LOGIC_VECTOR (addr_size-1 downto 0);
+    Port ( ADD_A : in  STD_LOGIC_VECTOR (addr_size_BR-1 downto 0);
+           ADD_B : in  STD_LOGIC_VECTOR (addr_size_BR-1 downto 0);
+           ADD_W : in  STD_LOGIC_VECTOR (addr_size_BR-1 downto 0);
            W : in  STD_LOGIC;
-           DATA : in  STD_LOGIC_VECTOR (size_mem-1 downto 0);
+           DATA : in  STD_LOGIC_VECTOR (size_inst-1 downto 0);
            RST : in  STD_LOGIC;
            CK : in  STD_LOGIC;
-           QA : out  STD_LOGIC_VECTOR (size_mem-1 downto 0);
-           QB : out  STD_LOGIC_VECTOR (size_mem-1 downto 0));
+           QA : out  STD_LOGIC_VECTOR (size_inst-1 downto 0);
+           QB : out  STD_LOGIC_VECTOR (size_inst-1 downto 0));
 end Banc_registres;
 
 architecture Behavioral of Banc_registres is
-type Type_Banc is array(0 to width-1) of std_logic_vector(size_mem-1 downto 0);
+type Type_Banc is array(0 to width-1) of std_logic_vector(size_inst-1 downto 0);
 signal Banc : Type_Banc;
 
 begin
 
 	process begin
-		wait until CK'event and CK='1';
-			if RST='0' then
+		wait until CK'event and CK='0';
+			if RST='1' then
 				Banc <= (others => (others=>'0'));
-			else if RST='1' then
+			else if RST='0' then
 				if W='1' then
 					-- écriture : 
 					Banc(conv_integer(ADD_W)) <= DATA;

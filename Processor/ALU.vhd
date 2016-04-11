@@ -34,7 +34,6 @@ USE ieee.numeric_std.ALL;
 
 entity ALU is
 	generic(	width:	integer:=8
-				--carry: std_logic_vector:=(
 	);
     Port ( DinA : in  STD_LOGIC_VECTOR (width-1 downto 0);
            DinB : in  STD_LOGIC_VECTOR (width-1 downto 0);

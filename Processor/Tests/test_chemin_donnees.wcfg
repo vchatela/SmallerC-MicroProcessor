@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="/home/valentinc/Bureau/Projet Systeme Info - Archi/processeur/test_chemin_donnees_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="numeric_std" />
+            <top_module name="std_logic_1164" />
+            <top_module name="std_logic_arith" />
+            <top_module name="std_logic_unsigned" />
+            <top_module name="test_chemin_donnees" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="24" />
+   <wvobject fp_name="/test_chemin_donnees/ck" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ck</obj_property>
+      <obj_property name="ObjectShortName">ck</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/PLI2DI/out_a" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_a[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_a[7:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/PLI2DI/out_op" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_op[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_op[7:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/PLI2DI/out_b" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_b[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_b[7:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/PLI2DI/out_c" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_c[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_c[7:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/AL/ctrl_alu" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ctrl_alu[2:0]</obj_property>
+      <obj_property name="ObjectShortName">ctrl_alu[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/PDI2EX/out_a" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_a[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_a[7:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff0000</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/PDI2EX/out_op" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_op[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_op[7:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff0000</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/PDI2EX/out_b" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_b[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_b[7:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff0000</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/PDI2EX/out_c" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_c[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_c[7:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff0000</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/PEX2MEM/out_a" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_a[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_a[7:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffa500</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/PEX2MEM/out_op" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_op[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_op[7:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffa500</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/PEX2MEM/out_b" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_b[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_b[7:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffa500</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/PEX2MEM/out_c" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_c[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_c[7:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffa500</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/PMEM2RE/out_a" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_a[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_a[7:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#0000ff</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/PMEM2RE/out_op" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_op[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_op[7:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#0000ff</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/PMEM2RE/out_b" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_b[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_b[7:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#0000ff</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/PMEM2RE/out_c" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_c[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_c[7:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#0000ff</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/BR/w" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">w</obj_property>
+      <obj_property name="ObjectShortName">w</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/BR/add_w" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">add_w[3:0]</obj_property>
+      <obj_property name="ObjectShortName">add_w[3:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/BR/data" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">data[7:0]</obj_property>
+      <obj_property name="ObjectShortName">data[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/CP/dout" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dout[15:0]</obj_property>
+      <obj_property name="ObjectShortName">dout[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/BR/banc" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">banc[0:31]</obj_property>
+      <obj_property name="ObjectShortName">banc[0:31]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[0]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[0]</obj_property>
+         <obj_property name="ObjectShortName">banc[0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[1]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[1]</obj_property>
+         <obj_property name="ObjectShortName">banc[1]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[2]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[2]</obj_property>
+         <obj_property name="ObjectShortName">banc[2]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[3]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[3]</obj_property>
+         <obj_property name="ObjectShortName">banc[3]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[4]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[4]</obj_property>
+         <obj_property name="ObjectShortName">banc[4]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[5]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[5]</obj_property>
+         <obj_property name="ObjectShortName">banc[5]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[6]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[6]</obj_property>
+         <obj_property name="ObjectShortName">banc[6]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[7]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[7]</obj_property>
+         <obj_property name="ObjectShortName">banc[7]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[8]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[8]</obj_property>
+         <obj_property name="ObjectShortName">banc[8]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[9]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[9]</obj_property>
+         <obj_property name="ObjectShortName">banc[9]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[10]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[10]</obj_property>
+         <obj_property name="ObjectShortName">banc[10]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[11]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[11]</obj_property>
+         <obj_property name="ObjectShortName">banc[11]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[12]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[12]</obj_property>
+         <obj_property name="ObjectShortName">banc[12]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[13]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[13]</obj_property>
+         <obj_property name="ObjectShortName">banc[13]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[14]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[14]</obj_property>
+         <obj_property name="ObjectShortName">banc[14]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[15]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[15]</obj_property>
+         <obj_property name="ObjectShortName">banc[15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[16]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[16]</obj_property>
+         <obj_property name="ObjectShortName">banc[16]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[17]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[17]</obj_property>
+         <obj_property name="ObjectShortName">banc[17]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[18]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[18]</obj_property>
+         <obj_property name="ObjectShortName">banc[18]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[19]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[19]</obj_property>
+         <obj_property name="ObjectShortName">banc[19]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[20]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[20]</obj_property>
+         <obj_property name="ObjectShortName">banc[20]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[21]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[21]</obj_property>
+         <obj_property name="ObjectShortName">banc[21]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[22]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[22]</obj_property>
+         <obj_property name="ObjectShortName">banc[22]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[23]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[23]</obj_property>
+         <obj_property name="ObjectShortName">banc[23]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[24]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[24]</obj_property>
+         <obj_property name="ObjectShortName">banc[24]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[25]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[25]</obj_property>
+         <obj_property name="ObjectShortName">banc[25]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[26]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[26]</obj_property>
+         <obj_property name="ObjectShortName">banc[26]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[27]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[27]</obj_property>
+         <obj_property name="ObjectShortName">banc[27]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[28]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[28]</obj_property>
+         <obj_property name="ObjectShortName">banc[28]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[29]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[29]</obj_property>
+         <obj_property name="ObjectShortName">banc[29]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[30]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[30]</obj_property>
+         <obj_property name="ObjectShortName">banc[30]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[31]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[31]</obj_property>
+         <obj_property name="ObjectShortName">banc[31]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>
