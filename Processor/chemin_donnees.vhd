@@ -32,7 +32,7 @@ generic(
 	depth_MD: 	integer:=64;
 	width_MI:	integer:=8;
 	size_inst_MI: 	integer:=32;
-	width_C:	integer:=16;
+	width_C:	integer:=8;
 	size_op: integer:=8 -- size_inst_MI/4
 );
 	port(	
@@ -88,7 +88,7 @@ architecture Behavioral of chemin_donnees is
 	end component;
 
 	component Mem_inst is
-		generic(	width:	integer:=16;
+		generic(	width:	integer:=8;
 					size_inst: 	integer:=32);
 		 Port ( ADDR : in  STD_LOGIC_VECTOR(width-1 downto 0);
 				  CK : in  STD_LOGIC;
@@ -96,7 +96,7 @@ architecture Behavioral of chemin_donnees is
 	end component;
 
 	component compteur is
-		generic(	width:	integer:=16);
+		generic(	width:	integer:=8);
 		
 		Port ( CK : in  STD_LOGIC;
 				  RST : in  STD_LOGIC;
@@ -173,7 +173,9 @@ architecture Behavioral of chemin_donnees is
 	  
   -- Compteur --
   signal out_CP :  STD_LOGIC_VECTOR (width_C-1 downto 0);
-	
+  signal in_cpt_load : STD_LOGIC;
+  signal in_cpt_in : STD_LOGIC_VECTOR (width_C-1 downto 0);
+  
   signal w :  STD_LOGIC;
   signal rw : STD_LOGIC;
 begin	
@@ -187,14 +189,24 @@ begin
 
 	w <= '0' when out_mem_re_op = x"08"else '1';
 	-- R : 1(LOAD) - W : 0 (STORE)
-	rw <= '0';-- when out_mem_re_op = x"08" else '1';
+	rw <= '0' when out_mem_re_op = x"08" else '1';
 	
 	MD : Mem_donnee port map ( in_addr_md, out_ex_mem_b , rw, RST, CK, out_DoutD);
 	
 	MI : Mem_inst port map (out_CP, CK, out_MI);
-	CP : compteur port map (CK , RST , '1', '0' , '0' , (others=>'0'), out_CP);
+	CP : compteur port map (CK , RST , '1', in_cpt_load , '0' , in_cpt_in, out_CP);
 	
 	-- Multiplexors--	
+	-- MUX JM --
+		-- MUX JMP si x"09" JMZ si x"0A"
+		with out_li_di_op & out_Z select in_cpt_load <=
+			'1' when x"09"&'1' | x"09"&'0' ,
+			'1' when x"0A"&'1',
+			'0' when others;
+		in_cpt_in <= out_li_di_a when out_li_di_op = x"09" else (others=>'0');
+		
+	
+	
 	-- MUX_BR -- defini si on veut B ou val @B
 	in_di_ex_b <= out_QA when out_li_di_op = x"05" else out_li_di_b;
 	-- MUX_UAL --   ADD x01 SUB x02 .. DIV x04

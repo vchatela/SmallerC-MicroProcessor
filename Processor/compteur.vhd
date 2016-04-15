@@ -53,7 +53,7 @@ begin
 	
 		wait until CK'event and CK='1';
 			if (RST='1') then
-				Compteur<=(OTHERS => '0'); -- Compteur <= "00000000";
+				Compteur<=(OTHERS => '0');
 			else
 				if (LOAD='1') then
 					Compteur<=Din;

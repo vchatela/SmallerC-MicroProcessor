@@ -32,7 +32,7 @@ use ieee.std_logic_unsigned.all;
 --use UNISIM.VComponents.all;
 
 entity Mem_inst is
-	generic(	width:	integer:=16; --16 bits d'@
+	generic(	width:	integer:=8;
 				size_inst: 	integer:=32);
     Port ( ADDR : in  STD_LOGIC_VECTOR(width-1 downto 0);
            CK : in  STD_LOGIC;
@@ -42,13 +42,13 @@ end Mem_inst;
 architecture Behavioral of Mem_inst is
 type rom_type is array (0 to 2**width -1) of STD_LOGIC_VECTOR(size_inst-1 downto 0);
 
-signal rom : rom_type:= (x"ffffffff",x"06051202",x"ffffffff",x"ffffffff",x"ffffffff",x"ffffffff",x"050405FF",x"01040405",others=> x"00000000");
+signal rom : rom_type:= (x"06051202",x"ffffffff",x"ffffffff",x"ffffffff",x"ffffffff",x"050405FF",x"01040405",others=> x"00000000");
 -- AFC 0x0 	0x1
 -- AFC 0x5 	0x12
 -- AFC 0xA 	0x58
 -- AFC 0x3  0x56
 -- COP 0xA	0x00
--- COP 0x0	0x05
+-- COP 0x0	0x05 
 -- COP 0x5	0x03
 -- ADD 0x2 	0x5  0x3
 -- MUL 0x5  0x3  0xA

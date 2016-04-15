@@ -33,12 +33,12 @@ use ieee.std_logic_unsigned.all;
 
 entity pipeline is
 	generic(	size_op:	integer:=4);
-    Port ( in_a : in  STD_LOGIC_VECTOR (size_op-1 downto 0);
-           in_op : in  STD_LOGIC_VECTOR (size_op-1 downto 0);
+    Port ( in_op : in  STD_LOGIC_VECTOR (size_op-1 downto 0);
+			  in_a : in  STD_LOGIC_VECTOR (size_op-1 downto 0);
            in_b : in  STD_LOGIC_VECTOR (size_op-1 downto 0);
            in_c : in  STD_LOGIC_VECTOR (size_op-1 downto 0);
+			  out_op : out  STD_LOGIC_VECTOR (size_op-1 downto 0);
            out_a : out  STD_LOGIC_VECTOR (size_op-1 downto 0);
-           out_op : out  STD_LOGIC_VECTOR (size_op-1 downto 0);
            out_b : out  STD_LOGIC_VECTOR (size_op-1 downto 0);
            out_c : out  STD_LOGIC_VECTOR (size_op-1 downto 0);
 			  ck : in STD_LOGIC);
@@ -49,8 +49,8 @@ architecture Behavioral of pipeline is
 begin
 	process begin
 		wait until ck'event and ck='1';
-			out_a <= in_a;
 			out_op <= in_op;
+			out_a <= in_a;
 			out_b <= in_b;
 			out_c <= in_c;
 	end process;
