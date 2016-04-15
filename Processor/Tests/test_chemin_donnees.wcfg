@@ -3,7 +3,7 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="/home/valentinc/Bureau/Projet Systeme Info - Archi/processeur/test_chemin_donnees_isim_beh.wdb" id="1" type="auto">
+      <db_ref path="/home/valentinc/Bureau/Projet Systeme Info - Archi/processeur/test_chemin_donnees_isim_beh1.wdb" id="1" type="auto">
          <top_modules>
             <top_module name="numeric_std" />
             <top_module name="std_logic_1164" />
@@ -13,7 +13,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="24" />
+   <WVObjectSize size="21" />
    <wvobject fp_name="/test_chemin_donnees/ck" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">ck</obj_property>
       <obj_property name="ObjectShortName">ck</obj_property>
@@ -22,16 +22,16 @@
       <obj_property name="ElementShortName">rst</obj_property>
       <obj_property name="ObjectShortName">rst</obj_property>
    </wvobject>
-   <wvobject fp_name="/test_chemin_donnees/uut/PLI2DI/out_a" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">out_a[7:0]</obj_property>
-      <obj_property name="ObjectShortName">out_a[7:0]</obj_property>
+   <wvobject fp_name="/test_chemin_donnees/uut/PLI2DI/out_op" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_op[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_op[7:0]</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
       <obj_property name="CustomSignalColor">#ffff00</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/test_chemin_donnees/uut/PLI2DI/out_op" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">out_op[7:0]</obj_property>
-      <obj_property name="ObjectShortName">out_op[7:0]</obj_property>
+   <wvobject fp_name="/test_chemin_donnees/uut/PLI2DI/out_a" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_a[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_a[7:0]</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
       <obj_property name="CustomSignalColor">#ffff00</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
@@ -54,16 +54,16 @@
       <obj_property name="ElementShortName">ctrl_alu[2:0]</obj_property>
       <obj_property name="ObjectShortName">ctrl_alu[2:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/test_chemin_donnees/uut/PDI2EX/out_a" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">out_a[7:0]</obj_property>
-      <obj_property name="ObjectShortName">out_a[7:0]</obj_property>
+   <wvobject fp_name="/test_chemin_donnees/uut/PDI2EX/out_op" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_op[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_op[7:0]</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
       <obj_property name="CustomSignalColor">#ff0000</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/test_chemin_donnees/uut/PDI2EX/out_op" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">out_op[7:0]</obj_property>
-      <obj_property name="ObjectShortName">out_op[7:0]</obj_property>
+   <wvobject fp_name="/test_chemin_donnees/uut/PDI2EX/out_a" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_a[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_a[7:0]</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
       <obj_property name="CustomSignalColor">#ff0000</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
@@ -82,16 +82,16 @@
       <obj_property name="CustomSignalColor">#ff0000</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/test_chemin_donnees/uut/PEX2MEM/out_a" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">out_a[7:0]</obj_property>
-      <obj_property name="ObjectShortName">out_a[7:0]</obj_property>
+   <wvobject fp_name="/test_chemin_donnees/uut/PEX2MEM/out_op" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_op[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_op[7:0]</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
       <obj_property name="CustomSignalColor">#ffa500</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/test_chemin_donnees/uut/PEX2MEM/out_op" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">out_op[7:0]</obj_property>
-      <obj_property name="ObjectShortName">out_op[7:0]</obj_property>
+   <wvobject fp_name="/test_chemin_donnees/uut/PEX2MEM/out_a" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_a[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_a[7:0]</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
       <obj_property name="CustomSignalColor">#ffa500</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
@@ -110,16 +110,16 @@
       <obj_property name="CustomSignalColor">#ffa500</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/test_chemin_donnees/uut/PMEM2RE/out_a" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">out_a[7:0]</obj_property>
-      <obj_property name="ObjectShortName">out_a[7:0]</obj_property>
+   <wvobject fp_name="/test_chemin_donnees/uut/PMEM2RE/out_op" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_op[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_op[7:0]</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
       <obj_property name="CustomSignalColor">#0000ff</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/test_chemin_donnees/uut/PMEM2RE/out_op" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">out_op[7:0]</obj_property>
-      <obj_property name="ObjectShortName">out_op[7:0]</obj_property>
+   <wvobject fp_name="/test_chemin_donnees/uut/PMEM2RE/out_a" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out_a[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out_a[7:0]</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
       <obj_property name="CustomSignalColor">#0000ff</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
@@ -142,25 +142,10 @@
       <obj_property name="ElementShortName">w</obj_property>
       <obj_property name="ObjectShortName">w</obj_property>
    </wvobject>
-   <wvobject fp_name="/test_chemin_donnees/uut/BR/add_w" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">add_w[3:0]</obj_property>
-      <obj_property name="ObjectShortName">add_w[3:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/test_chemin_donnees/uut/BR/data" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">data[7:0]</obj_property>
-      <obj_property name="ObjectShortName">data[7:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/test_chemin_donnees/uut/CP/dout" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">dout[15:0]</obj_property>
-      <obj_property name="ObjectShortName">dout[15:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
-   </wvobject>
    <wvobject fp_name="/test_chemin_donnees/uut/BR/banc" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">banc[0:31]</obj_property>
       <obj_property name="ObjectShortName">banc[0:31]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
       <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[0]" type="array" db_ref_id="1">
          <obj_property name="ElementShortName">[0]</obj_property>
          <obj_property name="ObjectShortName">banc[0]</obj_property>

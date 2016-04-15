@@ -57,7 +57,9 @@ begin
 		wait until CK'event and CK='0';
 			if RST='1' then
 				Banc <= (others => (others=>'0'));
-			else if RST='0' then
+				QA <= (others=>'0');
+				QB <= (others=>'0');
+			else
 				if W='1' then
 					-- écriture : 
 					Banc(conv_integer(ADD_W)) <= DATA;
@@ -68,18 +70,16 @@ begin
 					end if;
 					
 					if ADD_W = ADD_B then
-						QA <= DATA;
+						QB <= DATA;
 					else 
-						QA <= Banc(conv_integer(ADD_B));
+						QB <= Banc(conv_integer(ADD_B));
 					end if;	
-			else if W='0' then
-			-- lecture :
-			QA <= Banc(conv_integer(ADD_A));
-			QB <= Banc(conv_integer(ADD_B));
+				else
+					-- lecture :
+					QA <= Banc(conv_integer(ADD_A));
+					QB <= Banc(conv_integer(ADD_B));
+				end if;
 			end if;
-		end if;
-		end if;
-		end if;
 	end process;
 
 end Behavioral;

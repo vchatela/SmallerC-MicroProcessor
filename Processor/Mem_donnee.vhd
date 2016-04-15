@@ -32,7 +32,7 @@ use ieee.std_logic_unsigned.all;
 --use UNISIM.VComponents.all;
 
 entity Mem_donnee is
-	generic(	width:	integer:=16;
+	generic(	width:	integer:=8;
 				depth: 	integer:=64);
 		
     Port ( ADDR : in  STD_LOGIC_VECTOR (width-1 downto 0);
