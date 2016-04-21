@@ -3,7 +3,7 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="/home/valentinc/Bureau/Projet Systeme Info - Archi/processeur/test_chemin_donnees_isim_beh1.wdb" id="1" type="auto">
+      <db_ref path="/home/valentinc/Bureau/Projet Systeme Info - Archi/processeur/test_chemin_donnees_isim_beh.wdb" id="1" type="auto">
          <top_modules>
             <top_module name="numeric_std" />
             <top_module name="std_logic_1164" />
@@ -13,14 +13,28 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="21" />
+   <WVObjectSize size="23" />
    <wvobject fp_name="/test_chemin_donnees/ck" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">ck</obj_property>
       <obj_property name="ObjectShortName">ck</obj_property>
    </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/CP/dout" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dout[7:0]</obj_property>
+      <obj_property name="ObjectShortName">dout[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/alea" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">alea</obj_property>
+      <obj_property name="ObjectShortName">alea</obj_property>
+   </wvobject>
    <wvobject fp_name="/test_chemin_donnees/uut/rst" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">rst</obj_property>
       <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/PLI2DI/in_op" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">in_op[7:0]</obj_property>
+      <obj_property name="ObjectShortName">in_op[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/test_chemin_donnees/uut/PLI2DI/out_op" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">out_op[7:0]</obj_property>
@@ -49,10 +63,6 @@
       <obj_property name="UseCustomSignalColor">true</obj_property>
       <obj_property name="CustomSignalColor">#ffff00</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/test_chemin_donnees/uut/AL/ctrl_alu" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">ctrl_alu[2:0]</obj_property>
-      <obj_property name="ObjectShortName">ctrl_alu[2:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/test_chemin_donnees/uut/PDI2EX/out_op" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">out_op[7:0]</obj_property>

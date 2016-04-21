@@ -23,22 +23,30 @@ use IEEE.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
 
 entity chemin_donnees is
-generic( 
-	width_ALU:	integer:=8;
-	-- USELESS : INSIDE BR.VHDL ONLY 	width_BR : integer:= 32; -- 4 octets d'adr => 32 bits 
-	size_men_BR: integer:=8;
+generic(
 	addr_size_BR: integer:=4;
-	width_MD:	integer:=8;
+	width:	integer:=8;
 	depth_MD: 	integer:=64;
-	width_MI:	integer:=8;
 	size_inst_MI: 	integer:=32;
-	width_C:	integer:=8;
 	size_op: integer:=8 -- size_inst_MI/4
 );
 	port(	
 	  CK : in  STD_LOGIC;
 	  RST : in  STD_LOGIC
 );
+	constant OP_NOP : std_logic_vector(width-1 downto 0)  := x"00";	
+	constant OP_ADD : std_logic_vector(width-1 downto 0)  := x"01";
+	constant OP_SUB : std_logic_vector(width-1 downto 0) := x"02";
+	constant OP_MUL : std_logic_vector(width-1 downto 0) := x"03";
+	constant OP_DIV : std_logic_vector(width-1 downto 0) := x"04";
+	constant OP_COP : std_logic_vector(width-1 downto 0) := x"05";
+	constant OP_AFC : std_logic_vector(width-1 downto 0) := x"06";
+	constant OP_LOAD : std_logic_vector(width-1 downto 0) :=x"07";
+	constant OP_STORE: std_logic_vector(width-1 downto 0) := x"08";
+	constant OP_JMP : std_logic_vector(width-1 downto 0) := x"09";
+	constant OP_JMF : std_logic_vector(width-1 downto 0) := x"0A";
+	
+	
 end chemin_donnees;
 
 architecture Behavioral of chemin_donnees is
@@ -154,30 +162,33 @@ architecture Behavioral of chemin_donnees is
 	signal out_mem_re_b : STD_LOGIC_VECTOR (size_op-1 downto 0);
 	
 	-- ALU --
-  signal out_alu :  STD_LOGIC_VECTOR (width_ALU-1 downto 0);
+  signal out_alu :  STD_LOGIC_VECTOR (width-1 downto 0);
   signal out_N :  STD_LOGIC;
   signal out_O :  STD_LOGIC;
   signal out_Z :  STD_LOGIC;
   signal out_C :  STD_LOGIC;
   
   -- Banc Registre --
-  signal out_QA :  STD_LOGIC_VECTOR (size_men_BR-1 downto 0);
-  signal out_QB :  STD_LOGIC_VECTOR (size_men_BR-1 downto 0);
+  signal out_QA :  STD_LOGIC_VECTOR (width-1 downto 0);
+  signal out_QB :  STD_LOGIC_VECTOR (width-1 downto 0);
   
   -- Memoire Donnee --
-  signal out_DoutD :  STD_LOGIC_VECTOR (width_MD-1 downto 0);
-  signal in_addr_md : STD_LOGIC_VECTOR (width_MD-1 downto 0);
+  signal out_DoutD :  STD_LOGIC_VECTOR (width-1 downto 0);
+  signal in_addr_md : STD_LOGIC_VECTOR (width-1 downto 0);
   
   -- Memoire Instruction --
   signal out_MI :  STD_LOGIC_VECTOR(size_inst_MI-1 downto 0);
 	  
   -- Compteur --
-  signal out_CP :  STD_LOGIC_VECTOR (width_C-1 downto 0);
+  signal out_CP :  STD_LOGIC_VECTOR (width-1 downto 0);
   signal in_cpt_load : STD_LOGIC;
-  signal in_cpt_in : STD_LOGIC_VECTOR (width_C-1 downto 0);
+  signal in_cpt_in : STD_LOGIC_VECTOR (width-1 downto 0);
+  -- Unite de detection des aleas
+  signal alea : STD_LOGIC;
   
   signal w :  STD_LOGIC;
   signal rw : STD_LOGIC;
+  
 begin	
 
 	-- Instantiations --
@@ -187,39 +198,41 @@ begin
 	BR : Banc_registres port map (out_li_di_b(addr_size_BR-1 downto 0), out_li_di_c(addr_size_BR-1 downto 0) , 
 	out_mem_re_a(addr_size_BR-1 downto 0), w,out_mem_re_b, RST, CK, out_QA,out_QB); 
 
-	w <= '0' when out_mem_re_op = x"08"else '1';
-	-- R : 1(LOAD) - W : 0 (STORE)
-	rw <= '0' when out_mem_re_op = x"08" else '1';
+	-- TODO : check if can save only one
+	w <= '0' when out_mem_re_op = OP_STORE else '1';
+	-- R : 1(LOAD) - W : 0 (STORE) 
+	rw <= '0' when out_mem_re_op = OP_STORE else '1';
 	
 	MD : Mem_donnee port map ( in_addr_md, out_ex_mem_b , rw, RST, CK, out_DoutD);
 	
 	MI : Mem_inst port map (out_CP, CK, out_MI);
-	CP : compteur port map (CK , RST , '1', in_cpt_load , '0' , in_cpt_in, out_CP);
+	CP : compteur port map (CK , RST , '1' , in_cpt_load ,alea , in_cpt_in, out_CP);
 	
 	-- Multiplexors--	
 	-- MUX JM --
 		-- MUX JMP si x"09" JMZ si x"0A"
 		with out_li_di_op & out_Z select in_cpt_load <=
-			'1' when x"09"&'1' | x"09"&'0' ,
-			'1' when x"0A"&'1',
+			'1' when OP_JMP &'1' | OP_JMP&'0' ,
+			'1' when OP_JMF &'1',
 			'0' when others;
-		in_cpt_in <= out_li_di_a when out_li_di_op = x"09" else (others=>'0');
-		
-	
+		in_cpt_in <= out_li_di_a when out_li_di_op = OP_JMP else (others=>'0'); -- TODO : JMP 0x1 (JMP @R1) - JMZ 0x1 (JMZ @R1)
 	
 	-- MUX_BR -- defini si on veut B ou val @B
-	in_di_ex_b <= out_QA when out_li_di_op = x"05" else out_li_di_b;
+	in_di_ex_b <= out_QA when out_li_di_op = OP_COP or (out_li_di_op >= OP_ADD and out_li_di_op <= OP_DIV) else out_li_di_b;
 	-- MUX_UAL --   ADD x01 SUB x02 .. DIV x04
-	in_ex_mem_b <= out_alu when out_di_ex_op >= x"01" and out_di_ex_op <= x"04"  else out_di_ex_b;
+	in_ex_mem_b <= out_alu when out_di_ex_op >= OP_ADD and out_di_ex_op <= OP_DIV  else out_di_ex_b;
 	-- MUX_MD -- A si OP = STORE B si OP = LOAD
-	in_addr_md <= out_ex_mem_a when out_ex_mem_op = x"08" else out_ex_mem_b;
-	in_mem_re_b <= out_DoutD when out_ex_mem_op = x"07" or out_ex_mem_op = x"08" else out_ex_mem_b;
+	in_addr_md <= out_ex_mem_a when out_ex_mem_op = OP_STORE else out_ex_mem_b;
+	in_mem_re_b <= out_DoutD when out_ex_mem_op = OP_LOAD or out_ex_mem_op = OP_STORE else out_ex_mem_b;
+	
+	-- Unité de détection des aléas   -- TODO : ADD
+	alea <= '1' when out_di_ex_op = OP_AFC and out_li_di_op = OP_COP and out_di_ex_a = out_li_di_b else '0';
 	
 	-- Pipelines --
 	in_li_di_c <= out_MI(size_op-1 downto 0);
 	in_li_di_b <= out_MI(2*size_op-1 downto size_op);
 	in_li_di_a <= out_MI(3*size_op-1 downto 2*size_op);
-	in_li_di_op <= out_MI(4*size_op-1 downto 3*size_op);
+	in_li_di_op <= out_MI(4*size_op-1 downto 3*size_op) when not(out_di_ex_op = OP_AFC and out_li_di_op = OP_COP and out_di_ex_a = out_li_di_b) else OP_NOP;
 	
 	PLI2DI : pipeline port map(in_li_di_op,in_li_di_a,in_li_di_b,in_li_di_c,  out_li_di_op,out_li_di_a, out_li_di_b, out_li_di_c, CK );
 	PDI2EX : pipeline port map(out_li_di_op, out_li_di_a,  in_di_ex_b, out_QB ,out_di_ex_op,out_di_ex_a,out_di_ex_b,out_di_ex_c, CK );

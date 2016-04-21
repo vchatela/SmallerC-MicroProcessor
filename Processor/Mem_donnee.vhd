@@ -56,10 +56,14 @@ begin
 			if (RST='1') then
 				tmp_ram <= (OTHERS => (others => '0'));
 			else
-				if (RW='1') then
-					Dout <= tmp_ram(conv_integer(ADDR));
-				else
-					tmp_ram(conv_integer(ADDR)) <= Din;
+				if (ADDR<depth-1 and ADDR >=0) then				
+					if (RW='1') then
+						Dout <= tmp_ram(conv_integer(ADDR));
+					else
+						tmp_ram(conv_integer(ADDR)) <= Din;
+					end if;
+				else 
+				Dout <= (others =>'0');
 				end if;
 			end if; 
 	end process;
