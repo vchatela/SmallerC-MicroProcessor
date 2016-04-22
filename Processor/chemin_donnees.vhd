@@ -121,6 +121,7 @@ architecture Behavioral of chemin_donnees is
 			  in_a : in  STD_LOGIC_VECTOR (size_op-1 downto 0);
            in_b : in  STD_LOGIC_VECTOR (size_op-1 downto 0);
            in_c : in  STD_LOGIC_VECTOR (size_op-1 downto 0);
+			  alea : in STD_LOGIC;
 			  out_op : out  STD_LOGIC_VECTOR (size_op-1 downto 0);
            out_a : out  STD_LOGIC_VECTOR (size_op-1 downto 0);
            out_b : out  STD_LOGIC_VECTOR (size_op-1 downto 0);
@@ -198,7 +199,7 @@ begin
 	BR : Banc_registres port map (out_li_di_b(addr_size_BR-1 downto 0), out_li_di_c(addr_size_BR-1 downto 0) , 
 	out_mem_re_a(addr_size_BR-1 downto 0), w,out_mem_re_b, RST, CK, out_QA,out_QB); 
 
-	-- TODO : check if can save only one
+	-- TODO : check
 	w <= '0' when out_mem_re_op = OP_STORE else '1';
 	-- R : 1(LOAD) - W : 0 (STORE) 
 	rw <= '0' when out_mem_re_op = OP_STORE else '1';
@@ -211,7 +212,7 @@ begin
 	-- Multiplexors--	
 	-- MUX JM --
 		-- MUX JMP si x"09" JMZ si x"0A"
-		with out_li_di_op & out_Z select in_cpt_load <=
+		with in_li_di_op & out_Z select in_cpt_load <=
 			'1' when OP_JMP &'1' | OP_JMP&'0' ,
 			'1' when OP_JMF &'1',
 			'0' when others;
@@ -225,19 +226,24 @@ begin
 	in_addr_md <= out_ex_mem_a when out_ex_mem_op = OP_STORE else out_ex_mem_b;
 	in_mem_re_b <= out_DoutD when out_ex_mem_op = OP_LOAD or out_ex_mem_op = OP_STORE else out_ex_mem_b;
 	
-	-- Unité de détection des aléas   -- TODO : ADD
-	alea <= '1' when out_di_ex_op = OP_AFC and out_li_di_op = OP_COP and out_di_ex_a = out_li_di_b else '0';
+	-- Unité de détection des aléas
+	alea <= '1' when ((in_di_ex_op = OP_AFC or in_di_ex_op = OP_COP) and in_li_di_op = OP_COP and in_di_ex_a = in_li_di_b)
+						or (in_di_ex_op >= OP_ADD and in_di_ex_op <= OP_DIV and in_li_di_op >= OP_ADD and in_li_di_op <= OP_DIV and (in_di_ex_a = in_li_di_b or in_di_ex_b = in_li_di_c))
+				else '0';
 	
 	-- Pipelines --
 	in_li_di_c <= out_MI(size_op-1 downto 0);
 	in_li_di_b <= out_MI(2*size_op-1 downto size_op);
 	in_li_di_a <= out_MI(3*size_op-1 downto 2*size_op);
-	in_li_di_op <= out_MI(4*size_op-1 downto 3*size_op) when not(out_di_ex_op = OP_AFC and out_li_di_op = OP_COP and out_di_ex_a = out_li_di_b) else OP_NOP;
+	in_li_di_op <= out_MI(4*size_op-1 downto 3*size_op);
 	
-	PLI2DI : pipeline port map(in_li_di_op,in_li_di_a,in_li_di_b,in_li_di_c,  out_li_di_op,out_li_di_a, out_li_di_b, out_li_di_c, CK );
-	PDI2EX : pipeline port map(out_li_di_op, out_li_di_a,  in_di_ex_b, out_QB ,out_di_ex_op,out_di_ex_a,out_di_ex_b,out_di_ex_c, CK );
-	PEX2MEM : pipeline port map(out_di_ex_op,out_di_ex_a,in_ex_mem_b,(others=>'0'),out_ex_mem_op,out_ex_mem_a,out_ex_mem_b,open, CK );
-	PMEM2RE : pipeline port map(out_ex_mem_op,out_ex_mem_a,in_mem_re_b,(others=>'0'),out_mem_re_op,out_mem_re_a,out_mem_re_b,open, CK );
+	in_di_ex_op <= out_li_di_op;
+	in_di_ex_a <= out_li_di_a;
+	
+	PLI2DI : pipeline port map(in_li_di_op,in_li_di_a,in_li_di_b,in_li_di_c, alea, out_li_di_op,out_li_di_a, out_li_di_b, out_li_di_c, CK );
+	PDI2EX : pipeline port map(in_di_ex_op, in_di_ex_a,  in_di_ex_b, out_QB , '0', out_di_ex_op,out_di_ex_a,out_di_ex_b,out_di_ex_c, CK );
+	PEX2MEM : pipeline port map(out_di_ex_op,out_di_ex_a,in_ex_mem_b,(others=>'0'), '0',out_ex_mem_op,out_ex_mem_a,out_ex_mem_b,open, CK );
+	PMEM2RE : pipeline port map(out_ex_mem_op,out_ex_mem_a,in_mem_re_b,(others=>'0'), '0'	, out_mem_re_op,out_mem_re_a,out_mem_re_b,open, CK );
 	
 	
 end Behavioral;

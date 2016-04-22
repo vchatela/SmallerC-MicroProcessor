@@ -42,8 +42,10 @@ end Mem_inst;
 architecture Behavioral of Mem_inst is
 type rom_type is array (0 to 2**width -1) of STD_LOGIC_VECTOR(size_inst-1 downto 0);
 
-signal rom : rom_type:= (x"06051202",x"05040502",x"ffffffff",x"ffffffff",x"05030402",x"ffffffff",x"ffffffff",x"ffffffff",x"ffffffff",x"01040504",x"02030304",others=> x"00000000");--x"03030304",
+signal rom : rom_type:= (x"06051202",x"05040502",x"ffffffff",x"ffffffff",x"05040502",x"05030402",x"01040504",x"02030304",others=> x"00000000");
 -- AFC 0x05	0x12				R5 = 12
+-- COP 0x4	0x5				R5 = R4 = 12
+-- FF
 -- COP 0x4	0x5				R5 = R4 = 12
 -- COP 0x3	0x4				R5 = R4 = R3 = 12
 -- ADD 0x4	0x05 0x04 		R4 = 24 
