@@ -100,6 +100,7 @@ architecture Behavioral of chemin_donnees is
 					size_inst: 	integer:=32);
 		 Port ( ADDR : in  STD_LOGIC_VECTOR(width-1 downto 0);
 				  CK : in  STD_LOGIC;
+				  alea : in STD_LOGIC;
 				  Dout : out  STD_LOGIC_VECTOR(size_inst-1 downto 0));
 	end component;
 
@@ -200,13 +201,13 @@ begin
 	out_mem_re_a(addr_size_BR-1 downto 0), w,out_mem_re_b, RST, CK, out_QA,out_QB); 
 
 	-- TODO : check
-	w <= '0' when out_mem_re_op = OP_STORE else '1';
+	w <= '1' when (out_mem_re_op >= OP_ADD and out_mem_re_op <= OP_LOAD) else '0';
 	-- R : 1(LOAD) - W : 0 (STORE) 
-	rw <= '0' when out_mem_re_op = OP_STORE else '1';
+	rw <= '1' when (out_mem_re_op >=OP_ADD and out_mem_re_op <= OP_LOAD) else '0';
 	
 	MD : Mem_donnee port map ( in_addr_md, out_ex_mem_b , rw, RST, CK, out_DoutD);
 	
-	MI : Mem_inst port map (out_CP, CK, out_MI);
+	MI : Mem_inst port map (out_CP, CK, alea, out_MI);
 	CP : compteur port map (CK , RST , '1' , in_cpt_load ,alea , in_cpt_in, out_CP);
 	
 	-- Multiplexors--	
@@ -228,7 +229,7 @@ begin
 	
 	-- Unité de détection des aléas
 	alea <= '1' when ((in_di_ex_op = OP_AFC or in_di_ex_op = OP_COP) and in_li_di_op = OP_COP and in_di_ex_a = in_li_di_b)
-						or (in_di_ex_op >= OP_ADD and in_di_ex_op <= OP_DIV and in_li_di_op >= OP_ADD and in_li_di_op <= OP_DIV and (in_di_ex_a = in_li_di_b or in_di_ex_b = in_li_di_c))
+						or (in_di_ex_op >= OP_ADD and in_di_ex_op <= OP_DIV and in_li_di_op >= OP_ADD and in_li_di_op <= OP_DIV and (in_di_ex_a = in_li_di_b or in_di_ex_a = in_li_di_c))
 				else '0';
 	
 	-- Pipelines --

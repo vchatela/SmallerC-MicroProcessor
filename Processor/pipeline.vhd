@@ -57,9 +57,12 @@ begin
 				out_c <= in_c;
 			else 
 				out_op <= (others => '0'); -- OP_NOP
-				out_a <= (others => '0');
-				out_b <= (others => '0');
-				out_c <= (others => '0');
+				out_a <= in_a;
+				out_b <= in_b;
+				out_c <= in_c;
+				--out_a <= (others => '0');
+				--out_b <= (others => '0');
+				--out_c <= (others => '0');
 			end if;
 	end process;
 end Behavioral;
