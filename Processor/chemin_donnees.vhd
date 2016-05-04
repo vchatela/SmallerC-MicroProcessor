@@ -32,7 +32,9 @@ generic(
 );
 	port(	
 	  CK : in  STD_LOGIC;
-	  RST : in  STD_LOGIC
+	  RST : in  STD_LOGIC;
+	  QA : out STD_LOGIC_VECTOR (size_op-1 downto 0);
+	  QB : out STD_LOGIC_VECTOR (size_op-1 downto 0)
 );
 	constant OP_NOP : std_logic_vector(width-1 downto 0)  := x"00";	
 	constant OP_ADD : std_logic_vector(width-1 downto 0)  := x"01";
@@ -123,6 +125,7 @@ architecture Behavioral of chemin_donnees is
            in_b : in  STD_LOGIC_VECTOR (size_op-1 downto 0);
            in_c : in  STD_LOGIC_VECTOR (size_op-1 downto 0);
 			  alea : in STD_LOGIC;
+			  rst : in STD_LOGIC;
 			  out_op : out  STD_LOGIC_VECTOR (size_op-1 downto 0);
            out_a : out  STD_LOGIC_VECTOR (size_op-1 downto 0);
            out_b : out  STD_LOGIC_VECTOR (size_op-1 downto 0);
@@ -187,7 +190,11 @@ architecture Behavioral of chemin_donnees is
   signal in_cpt_in : STD_LOGIC_VECTOR (width-1 downto 0);
   -- Unite de detection des aleas
   signal alea : STD_LOGIC;
-  
+  signal alea_di_ex_write_in_a : STD_LOGIC;
+  signal alea_ex_mem_write_in_a : STD_LOGIC;
+	signal alea_li_di_read_in_b : STD_LOGIC;
+	signal alea_li_di_read_in_c : STD_LOGIC;
+	
   signal w :  STD_LOGIC;
   signal rw : STD_LOGIC;
   
@@ -228,9 +235,16 @@ begin
 	in_mem_re_b <= out_DoutD when out_ex_mem_op = OP_LOAD or out_ex_mem_op = OP_STORE else out_ex_mem_b;
 	
 	-- Unité de détection des aléas
-	alea <= '1' when ((in_di_ex_op = OP_AFC or in_di_ex_op = OP_COP) and in_li_di_op = OP_COP and in_di_ex_a = in_li_di_b)
-						or (in_di_ex_op >= OP_ADD and in_di_ex_op <= OP_DIV and in_li_di_op >= OP_ADD and in_li_di_op <= OP_DIV and (in_di_ex_a = in_li_di_b or in_di_ex_a = in_li_di_c))
-				else '0';
+	alea_di_ex_write_in_a <= '1' when in_di_ex_op /= OP_STORE and in_di_ex_op /= OP_NOP else '0';
+	alea_ex_mem_write_in_a <= '1' when in_ex_mem_op /= OP_STORE and in_ex_mem_op /= OP_NOP else '0';
+	alea_li_di_read_in_b <= '1' when in_li_di_op /= OP_AFC and in_li_di_op /= OP_LOAD and in_li_di_op /= OP_NOP else '0';
+	alea_li_di_read_in_c <= '1' when in_li_di_op >= OP_ADD and in_li_di_op <= OP_DIV else '0';
+	
+	alea <=	'1' when alea_di_ex_write_in_a = '1' and alea_li_di_read_in_b = '1' and in_di_ex_a = in_li_di_b else
+				'1' when alea_di_ex_write_in_a = '1' and alea_li_di_read_in_c = '1' and in_di_ex_a = in_li_di_c else
+				'1' when alea_ex_mem_write_in_a = '1' and alea_li_di_read_in_b = '1' and in_ex_mem_a = in_li_di_b else 
+				'1' when alea_ex_mem_write_in_a = '1' and alea_li_di_read_in_c = '1' and in_ex_mem_a = in_li_di_c else
+				'0';
 	
 	-- Pipelines --
 	in_li_di_c <= out_MI(size_op-1 downto 0);
@@ -240,12 +254,16 @@ begin
 	
 	in_di_ex_op <= out_li_di_op;
 	in_di_ex_a <= out_li_di_a;
+	in_ex_mem_op <= out_di_ex_op; 
+	in_ex_mem_a <= out_di_ex_a;
 	
-	PLI2DI : pipeline port map(in_li_di_op,in_li_di_a,in_li_di_b,in_li_di_c, alea, out_li_di_op,out_li_di_a, out_li_di_b, out_li_di_c, CK );
-	PDI2EX : pipeline port map(in_di_ex_op, in_di_ex_a,  in_di_ex_b, out_QB , '0', out_di_ex_op,out_di_ex_a,out_di_ex_b,out_di_ex_c, CK );
-	PEX2MEM : pipeline port map(out_di_ex_op,out_di_ex_a,in_ex_mem_b,(others=>'0'), '0',out_ex_mem_op,out_ex_mem_a,out_ex_mem_b,open, CK );
-	PMEM2RE : pipeline port map(out_ex_mem_op,out_ex_mem_a,in_mem_re_b,(others=>'0'), '0'	, out_mem_re_op,out_mem_re_a,out_mem_re_b,open, CK );
+	PLI2DI : pipeline port map(in_li_di_op,in_li_di_a,in_li_di_b,in_li_di_c, alea, RST, out_li_di_op,out_li_di_a, out_li_di_b, out_li_di_c, CK );
+	PDI2EX : pipeline port map(in_di_ex_op, in_di_ex_a,  in_di_ex_b, out_QB , '0', RST, out_di_ex_op,out_di_ex_a,out_di_ex_b,out_di_ex_c, CK );
+	PEX2MEM : pipeline port map(out_di_ex_op,out_di_ex_a,in_ex_mem_b,(others=>'0'), '0',RST, out_ex_mem_op,out_ex_mem_a,out_ex_mem_b,open, CK );
+	PMEM2RE : pipeline port map(out_ex_mem_op,out_ex_mem_a,in_mem_re_b,(others=>'0'), '0'	, RST, out_mem_re_op,out_mem_re_a,out_mem_re_b,open, CK );
 	
+	QA <= out_QA;
+	QB <= out_QB;
 	
 end Behavioral;
 

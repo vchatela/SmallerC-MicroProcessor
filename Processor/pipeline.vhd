@@ -38,6 +38,7 @@ entity pipeline is
            in_b : in  STD_LOGIC_VECTOR (size_op-1 downto 0);
            in_c : in  STD_LOGIC_VECTOR (size_op-1 downto 0);
 			  alea : in STD_LOGIC;
+			  rst : in STD_LOGIC;
 			  out_op : out  STD_LOGIC_VECTOR (size_op-1 downto 0);
            out_a : out  STD_LOGIC_VECTOR (size_op-1 downto 0);
            out_b : out  STD_LOGIC_VECTOR (size_op-1 downto 0);
@@ -50,6 +51,12 @@ architecture Behavioral of pipeline is
 begin
 	process begin
 		wait until ck'event and ck='1';
+		if(rst = '1') then
+			out_op <= (others => '0');
+			out_a <= (others => '0');
+			out_b <= (others => '0');
+			out_c <= (others => '0');
+		else
 			if(alea = '0') then
 				out_op <= in_op;
 				out_a <= in_a;
@@ -60,10 +67,8 @@ begin
 				out_a <= in_a;
 				out_b <= in_b;
 				out_c <= in_c;
-				--out_a <= (others => '0');
-				--out_b <= (others => '0');
-				--out_c <= (others => '0');
 			end if;
+		end if;
 	end process;
 end Behavioral;
 
