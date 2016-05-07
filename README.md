@@ -59,12 +59,12 @@ valentinc@valentinc:~$ flex --version
 flex 2.5.39
 valentinc@valentinc:~$ bison --version 
 bison (GNU Bison) 3.0.2
-Écrit par Robert Corbett et Richard Stallman.
+Ã‰crit par Robert Corbett et Richard Stallman.
 
-Copyright © 2013 Free Software Foundation, Inc.
+Copyright Â© 2013 Free Software Foundation, Inc.
 Ce logiciel est libre; voir les sources pour les conditions de
-reproduction. AUCUNE garantie n'est donnée; tant pour des raisons
-COMMERCIALES que pour RÉPONDRE À UN BESOIN PARTICULIER.
+reproduction. AUCUNE garantie n'est donnÃ©e; tant pour des raisons
+COMMERCIALES que pour RÃ‰PONDRE Ã€ UN BESOIN PARTICULIER.
 ```
 To compile it, you only need to :
 ``` valentinc@valentinc:~/C_Compiler-VHDL/Compiler$ make ```
@@ -178,8 +178,8 @@ valentinc@valentinc:~/C_Compiler-VHDL/Interpreter$ ./interpreteur < assembler.as
  53. EXT  17 			 Process exited with code 0
  54. RET
  ```
- 
- #Processor execution (Xillinx)
+
+#Processor execution (Xillinx)
  The following code executed on Xillinx 13.40
  ```
 signal rom : rom_type:= (
