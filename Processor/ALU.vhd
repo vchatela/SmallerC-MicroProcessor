@@ -58,7 +58,7 @@ begin
 					(others => 'X'); 
 	N	<= alu_tmp(width - 1);
 	O	<= '1' when Ctrl_Alu = "010" and alu_tmp(2*width-1 downto width) /= over else '0';
-	Z <= '1' when alu_tmp(width-1 downto 0) = over else '0';
+	Z <= '1' when alu_tmp(width-1 downto 0) = over and Ctrl_Alu /= "000" else '0';
 	C <= alu_tmp(width); 
 	Dout <= alu_tmp(width - 1 downto 0);
 end Behavioral;

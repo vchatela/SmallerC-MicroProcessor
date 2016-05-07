@@ -13,7 +13,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="23" />
+   <WVObjectSize size="25" />
    <wvobject fp_name="/test_chemin_donnees/ck" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">ck</obj_property>
       <obj_property name="ObjectShortName">ck</obj_property>
@@ -21,6 +21,15 @@
    <wvobject fp_name="/test_chemin_donnees/uut/CP/dout" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">dout[7:0]</obj_property>
       <obj_property name="ObjectShortName">dout[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/CP/load" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">load</obj_property>
+      <obj_property name="ObjectShortName">load</obj_property>
+   </wvobject>
+   <wvobject fp_name="/test_chemin_donnees/uut/CP/din" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">din[7:0]</obj_property>
+      <obj_property name="ObjectShortName">din[7:0]</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/test_chemin_donnees/uut/alea" type="logic" db_ref_id="1">
@@ -31,10 +40,9 @@
       <obj_property name="ElementShortName">rst</obj_property>
       <obj_property name="ObjectShortName">rst</obj_property>
    </wvobject>
-   <wvobject fp_name="/test_chemin_donnees/uut/PLI2DI/in_op" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">in_op[7:0]</obj_property>
-      <obj_property name="ObjectShortName">in_op[7:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
+   <wvobject fp_name="/test_chemin_donnees/uut/rst_p" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst_p</obj_property>
+      <obj_property name="ObjectShortName">rst_p</obj_property>
    </wvobject>
    <wvobject fp_name="/test_chemin_donnees/uut/PLI2DI/out_op" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">out_op[7:0]</obj_property>
@@ -155,7 +163,7 @@
    <wvobject fp_name="/test_chemin_donnees/uut/BR/banc" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">banc[0:31]</obj_property>
       <obj_property name="ObjectShortName">banc[0:31]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
       <wvobject fp_name="/test_chemin_donnees/uut/BR/banc[0]" type="array" db_ref_id="1">
          <obj_property name="ElementShortName">[0]</obj_property>
          <obj_property name="ObjectShortName">banc[0]</obj_property>

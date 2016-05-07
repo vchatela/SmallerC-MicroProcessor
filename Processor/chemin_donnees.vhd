@@ -46,7 +46,7 @@ generic(
 	constant OP_LOAD : std_logic_vector(width-1 downto 0) :=x"07";
 	constant OP_STORE: std_logic_vector(width-1 downto 0) := x"08";
 	constant OP_JMP : std_logic_vector(width-1 downto 0) := x"09";
-	constant OP_JMF : std_logic_vector(width-1 downto 0) := x"0A";
+	constant OP_JMZ : std_logic_vector(width-1 downto 0) := x"0A";
 	
 	
 end chemin_donnees;
@@ -197,17 +197,28 @@ architecture Behavioral of chemin_donnees is
 	
   signal w :  STD_LOGIC;
   signal rw : STD_LOGIC;
+  signal alu_z : STD_LOGIC;
+  signal alu_n : STD_LOGIC;
+  signal alu_o : STD_LOGIC;
+  signal alu_c : STD_LOGIC;
+  signal RST_P : STD_LOGIC;
   
 begin	
-
+	RST_P <= RST when RST = '1' else
+				'1' when out_li_di_op = OP_JMP or out_di_ex_op = OP_JMP or out_li_di_op = OP_JMZ or out_di_ex_op = OP_JMZ else 
+				'0';
 	-- Instantiations --
 	AL : ALU port map (out_di_ex_b, out_di_ex_c ,out_di_ex_op(2 downto 0), out_alu, out_N, out_O, out_Z, out_C);
-		
+	alu_z <= out_Z when (out_di_ex_op(2 downto 0) >= "000"  and out_di_ex_op(2 downto 0) <= "011") else '0';
+	alu_o <= out_O when (out_di_ex_op(2 downto 0) >= "000"  and out_di_ex_op(2 downto 0) <= "011") else '0';
+	alu_n <= out_N when (out_di_ex_op(2 downto 0) >= "000"  and out_di_ex_op(2 downto 0) <= "011") else '0';
+	alu_c <= out_C when (out_di_ex_op(2 downto 0) >= "000"  and out_di_ex_op(2 downto 0) <= "011") else '0';
+	
+	
 	-- DATA <= out_mem_re_b; W <= 1; -- AFC on écrit (W <= 1)  - ADD_W <= out_mem_re_a;
 	BR : Banc_registres port map (out_li_di_b(addr_size_BR-1 downto 0), out_li_di_c(addr_size_BR-1 downto 0) , 
 	out_mem_re_a(addr_size_BR-1 downto 0), w,out_mem_re_b, RST, CK, out_QA,out_QB); 
 
-	-- TODO : check
 	w <= '1' when (out_mem_re_op >= OP_ADD and out_mem_re_op <= OP_LOAD) else '0';
 	-- R : 1(LOAD) - W : 0 (STORE) 
 	rw <= '1' when (out_mem_re_op >=OP_ADD and out_mem_re_op <= OP_LOAD) else '0';
@@ -220,11 +231,11 @@ begin
 	-- Multiplexors--	
 	-- MUX JM --
 		-- MUX JMP si x"09" JMZ si x"0A"
-		with in_li_di_op & out_Z select in_cpt_load <=
+		with out_li_di_op & alu_z select in_cpt_load <=
 			'1' when OP_JMP &'1' | OP_JMP&'0' ,
-			'1' when OP_JMF &'1',
+			'1' when OP_JMZ &'1',
 			'0' when others;
-		in_cpt_in <= out_li_di_a when out_li_di_op = OP_JMP else (others=>'0'); -- TODO : JMP 0x1 (JMP @R1) - JMZ 0x1 (JMZ @R1)
+		in_cpt_in <= out_li_di_a when (out_li_di_op = OP_JMP or out_li_di_op = OP_JMZ) else (others=>'0');
 	
 	-- MUX_BR -- defini si on veut B ou val @B
 	in_di_ex_b <= out_QA when out_li_di_op = OP_COP or (out_li_di_op >= OP_ADD and out_li_di_op <= OP_DIV) else out_li_di_b;
@@ -235,10 +246,10 @@ begin
 	in_mem_re_b <= out_DoutD when out_ex_mem_op = OP_LOAD or out_ex_mem_op = OP_STORE else out_ex_mem_b;
 	
 	-- Unité de détection des aléas
-	alea_di_ex_write_in_a <= '1' when in_di_ex_op /= OP_STORE and in_di_ex_op /= OP_NOP else '0';
-	alea_ex_mem_write_in_a <= '1' when in_ex_mem_op /= OP_STORE and in_ex_mem_op /= OP_NOP else '0';
-	alea_li_di_read_in_b <= '1' when in_li_di_op /= OP_AFC and in_li_di_op /= OP_LOAD and in_li_di_op /= OP_NOP else '0';
-	alea_li_di_read_in_c <= '1' when in_li_di_op >= OP_ADD and in_li_di_op <= OP_DIV else '0';
+	alea_di_ex_write_in_a <= '1' when in_di_ex_op /= OP_STORE and in_di_ex_op /= OP_NOP and in_di_ex_op <= OP_JMZ else '0';
+	alea_ex_mem_write_in_a <= '1' when in_ex_mem_op /= OP_STORE and in_ex_mem_op /= OP_NOP and in_ex_mem_op <= OP_JMZ else '0';
+	alea_li_di_read_in_b <= '1' when in_li_di_op /= OP_AFC and in_li_di_op /= OP_LOAD and in_li_di_op /= OP_NOP and in_li_di_op <= OP_JMZ else '0';
+	alea_li_di_read_in_c <= '1' when in_li_di_op >= OP_ADD and in_li_di_op <= OP_DIV and in_li_di_op <= OP_JMZ else '0';
 	
 	alea <=	'1' when alea_di_ex_write_in_a = '1' and alea_li_di_read_in_b = '1' and in_di_ex_a = in_li_di_b else
 				'1' when alea_di_ex_write_in_a = '1' and alea_li_di_read_in_c = '1' and in_di_ex_a = in_li_di_c else
@@ -257,7 +268,7 @@ begin
 	in_ex_mem_op <= out_di_ex_op; 
 	in_ex_mem_a <= out_di_ex_a;
 	
-	PLI2DI : pipeline port map(in_li_di_op,in_li_di_a,in_li_di_b,in_li_di_c, alea, RST, out_li_di_op,out_li_di_a, out_li_di_b, out_li_di_c, CK );
+	PLI2DI : pipeline port map(in_li_di_op,in_li_di_a,in_li_di_b,in_li_di_c, alea, RST_P, out_li_di_op,out_li_di_a, out_li_di_b, out_li_di_c, CK );
 	PDI2EX : pipeline port map(in_di_ex_op, in_di_ex_a,  in_di_ex_b, out_QB , '0', RST, out_di_ex_op,out_di_ex_a,out_di_ex_b,out_di_ex_c, CK );
 	PEX2MEM : pipeline port map(out_di_ex_op,out_di_ex_a,in_ex_mem_b,(others=>'0'), '0',RST, out_ex_mem_op,out_ex_mem_a,out_ex_mem_b,open, CK );
 	PMEM2RE : pipeline port map(out_ex_mem_op,out_ex_mem_a,in_mem_re_b,(others=>'0'), '0'	, RST, out_mem_re_op,out_mem_re_a,out_mem_re_b,open, CK );
