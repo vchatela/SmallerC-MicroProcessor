@@ -23,7 +23,6 @@ void addInstruction(char * code, int nb, int * args){
 		prog[counter].args[i]=args[i];
 	}
 	counter ++;
-	//free(args);
 }
 
 void updateJMF(int pos, int to){

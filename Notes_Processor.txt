@@ -1,6 +1,0 @@
-﻿Différence variable signaux :
-La variable change en "temps-réel" alors que le signal est équivalent à un cable tiré contenant la valeur.
-
-On cherchera a eviter les latchs (flipflop) car ils sont générés en mémoire.
-
-Ex : on force d'avoir un else avec le if. On traitera ces cas.

@@ -7,7 +7,7 @@
 #define MAX 512
 
 struct s_instruction{
-	char codeOp[6]; //PCOPA\0
+	char codeOp[6];
 	int args[4];
 	int nb_args;
 };
