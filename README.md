@@ -1,6 +1,6 @@
-# Processor_Lexer_Yacc_Compiler_C
-
-![Complete Schema](http://s21.postimg.org/46rwmfq0n/Capture.png)
+# C compiler and his Microprocessor 
+A Simplify C compiler written using `lex` and `yacc`.
+A VHDL implementation of a microprocessor able to understand the asm returned by the compiler.
 
 # Language and Assembler
 ## Simplify C
@@ -12,7 +12,7 @@ The input language is a C-like language which recognize:
 - `printf(var)` whith var as a variable
 - if/else while
 - tabulars
-- pointers
+- pointers `int a, *b = &a;`
 
 ## Assembler 
 - **Addition** : `ADD @result @op1 @op2`
@@ -45,7 +45,6 @@ Different components :
 - 8 bits Compter
 - Instruction memory
 - Data memory
-- Direct memory access
 - Arithmetic and Logic Unity (ALU)
 - Data path
 - Control Unity
@@ -180,7 +179,7 @@ valentinc@valentinc:~/C_Compiler-VHDL/Interpreter$ ./interpreteur < assembler.as
  ```
 
 #Processor execution (Xillinx)
- The following code executed on Xillinx 13.40
+ The following code correctly executed on Xillinx 13.40
  ```
 signal rom : rom_type:= (
         x"06051202",    -- AFC 0x5	0x12		R5 = 12
@@ -197,4 +196,3 @@ signal rom : rom_type:= (
         others=> x"00000000");
 ```
  ![Execution](http://s32.postimg.org/up9snmwxv/Capture.png)
- 
