@@ -5,14 +5,14 @@ A VHDL implementation of a microprocessor able to understand the asm returned by
 # Language and Assembler
 ## Simplify C
 The input language is a C-like language which recognize:
-- functions and main
-- only integer
-- multiple declaration of const like `const int i, j=3,k;` (only in main)
+- Functions and main
+- Integers type
+- Multiple declaration of const like `const int i, j=3,k;`
 - Basic arithmetic operations
 - `printf(var)` whith var as a variable
-- if/else while
-- tabulars
-- pointers `int a, *b = &a;`
+- Loops and conditions : if - if_else and while
+- Tabulars ` int tab[10]; tab[2] = 5;`
+- Pointers `int a, *b = &a;`
 
 ## Assembler 
 - **Addition** : `ADD @result @op1 @op2`
