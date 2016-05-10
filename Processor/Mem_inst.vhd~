@@ -54,8 +54,8 @@ others=> x"00000000");
 -- MUL 0x3  0x3  	0x4		R3 = 12 * 24 = 288
 -- AFC 0x1  0x0				R1 = 0
 -- MUL 0x1  0x1  	0x1		R1 = 0*0  (Flag Z)
--- JMZ 0xC						JMZ inst(09000000)
--- dust x4
+-- JMZ 0xA						JMZ inst(09000000)
+-- dust x2
 -- JMP 0x0						JMP inst(06051202)
 -- dust x3
 
