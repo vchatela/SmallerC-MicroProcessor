@@ -215,10 +215,6 @@ WHILE : tWHILE {$1 = counter;} tPO EXPCONDITIONNELLE {  $3 = counter; int args[2
 RETURN : tRETURN EXPARITHMETIQUE tPV {int args[1]; args[0] = $2; addInstruction("EXT",1,args); addInstruction("RET",0,NULL);}
 		| tRETURN tPV {addInstruction("RET",0,NULL);};
 
-		
-/**TODO : comment trouver premiere ligne du main ???**/
-
-
 PRINT : tPRINT tPO tID tPF tPV {int pos = find_symbol($3,depth); if(pos==-1){PrintError("Symbol %s does not exist.",$3);}else{int args[1]; args[0] = pos; addInstruction("PRI",1,args);}}
 	| tPRINT tPO tETOILE tID tPF tPV {int args[1]; args[0] = find_symbol(getSymb(find_symbol($4,depth))->name,depth); addInstruction("PRI",1,args);}
 	| tPRINT tPO tID tCO tNB tCF tPF tPV {int pos = find_symbol($3,depth); if(0>$5 || getSymb(pos)->size <= $5){PrintError("Out of size of %s[%d]",$3,$5);} else{int args[1]; args[0] = pos + $5; addInstruction("PRI",1,args);}};

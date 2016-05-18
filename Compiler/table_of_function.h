@@ -5,7 +5,7 @@
 #include<string.h>
 #include<stdlib.h> 
 
-#define MAX 256
+#define MAX 512
 
 struct function{
 	char * name;
